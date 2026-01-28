@@ -68,6 +68,7 @@
             text-align: center;
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
         }
 
         .character {
@@ -90,24 +91,32 @@
         }
 
         .btn-sound {
-            margin-top: 15px;
-            padding: 10px 20px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            padding: 0;
             border: none;
-            border-radius: 20px;
+            border-radius: 50%;
             background: linear-gradient(135deg, #11998e, #38ef7d);
             color: white;
-            font-size: 1rem;
+            font-size: 1.5rem;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-sound:hover {
-            transform: translateY(-2px);
+            transform: translateY(-50%) scale(1.1);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .btn-sound:active {
-            transform: scale(0.95);
+            transform: translateY(-50%) scale(0.95);
         }
 
         .user-input {
@@ -357,7 +366,7 @@
         <div class="character-display">
             <div class="character" id="character">字</div>
             <div class="character-pinyin" id="pinyin">zì</div>
-            <button class="btn-sound" onclick="playCharacterSound()" title="Hear pronunciation">🔊 Hear</button>
+            <button class="btn-sound" id="soundBtn" title="Hear pronunciation">🔊</button>
         </div>
 
         <div class="feedback" id="feedback"></div>
@@ -775,32 +784,63 @@
             document.getElementById('total').textContent = totalCount;
         }
 
+        let audioElement = null;
+
         function playCharacterSound() {
             if (!currentCharacter) return;
 
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(currentCharacter.char);
-                utterance.lang = 'zh-TW';
-                utterance.rate = 0.8;
+            const btn = document.getElementById('soundBtn');
+            btn.style.opacity = '0.5';
 
-                const voices = window.speechSynthesis.getVoices();
-                const chineseVoice = voices.find(v => v.lang.includes('zh-TW')) ||
-                                     voices.find(v => v.lang.includes('zh'));
-                if (chineseVoice) utterance.voice = chineseVoice;
-
-                window.speechSynthesis.speak(utterance);
+            // Remove existing audio element if any
+            if (audioElement) {
+                audioElement.pause();
+                audioElement.remove();
             }
-        }
 
-        // Preload voices
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.getVoices();
-            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+            // Create audio element
+            audioElement = document.createElement('audio');
+            audioElement.style.display = 'none';
+            document.body.appendChild(audioElement);
+
+            // Use Google Translate TTS (more reliable)
+            const char = encodeURIComponent(currentCharacter.char);
+            audioElement.src = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-TW&q=${char}`;
+
+            audioElement.onended = function() {
+                btn.style.opacity = '1';
+            };
+
+            audioElement.onerror = function() {
+                btn.style.opacity = '1';
+                // Fallback to Web Speech API
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(currentCharacter.char);
+                    utterance.lang = 'zh-TW';
+                    utterance.rate = 0.8;
+                    window.speechSynthesis.speak(utterance);
+                }
+            };
+
+            audioElement.play().catch(() => {
+                btn.style.opacity = '1';
+                // Fallback to Web Speech API
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(currentCharacter.char);
+                    utterance.lang = 'zh-TW';
+                    utterance.rate = 0.8;
+                    window.speechSynthesis.speak(utterance);
+                }
+            });
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            document.getElementById('soundBtn').addEventListener('click', playCharacterSound);
+        });
     </script>
 </body>
 </html>
