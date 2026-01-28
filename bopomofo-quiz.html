@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bopomo.fo - Quiz</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYYX315R8M"></script>
     <script>
@@ -117,25 +118,36 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-text {
             font-size: 1.5rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
             font-weight: bold;
             letter-spacing: -1px;
         }
 
-        .logo .bopo {
+        .logo-text .bopo {
             color: white;
         }
 
-        .logo .mo {
+        .logo-text .mo {
             color: #ffd700;
         }
 
-        .logo .fo {
+        .logo-text .fo {
             color: #ff6b6b;
         }
 
-        .logo .dot {
+        .logo-text .dot {
             color: #4ecdc4;
         }
 
@@ -439,7 +451,10 @@
         <!-- Right: Practice area -->
         <div class="practice-panel">
             <div class="header">
-                <div class="logo"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
+                <div class="logo">
+                    <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
+                    <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
+                </div>
                 <nav class="nav-links">
                     <a href="index.html" class="nav-link">Learn</a>
                     <a href="bopomofo-quiz.html" class="nav-link active">Quiz</a>
