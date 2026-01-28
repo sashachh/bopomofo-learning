@@ -262,7 +262,7 @@
             <h1>注音符號 Bopomofo</h1>
             <p>Interactive Zhuyin Learning Tool</p>
             <nav class="nav-links">
-                <a href="bopomofo-learning.html" class="nav-link active">Learn</a>
+                <a href="index.html" class="nav-link active">Learn</a>
                 <a href="bopomofo-practice.html" class="nav-link">Practice</a>
                 <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
             </nav>
@@ -355,79 +355,59 @@
         };
 
         let clickTimeout = null;
-        let audioCache = {};
-
-        // Create audio context for playback rate control
-        let audioContext = null;
-
-        function getAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            return audioContext;
-        }
-
-        // Hidden audio element for playback
-        let audioElement = null;
 
         function playSound(zhuyin, audioChar, tileElement) {
             // Show visual feedback
             tileElement.classList.add('playing');
             showAudioStatus(`🔊 ${zhuyin} (${audioChar})`);
 
-            // Remove existing audio element if any
-            if (audioElement) {
-                audioElement.pause();
-                audioElement.remove();
-            }
+            // Use Web Speech API
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
 
-            // Create audio element in the DOM (more reliable than new Audio())
-            audioElement = document.createElement('audio');
-            audioElement.style.display = 'none';
-            document.body.appendChild(audioElement);
+                const utterance = new SpeechSynthesisUtterance(audioChar);
+                utterance.lang = 'zh-TW'; // Use Taiwan Mandarin
+                utterance.rate = 0.8; // Slightly slower for clarity
 
-            // Try multiple TTS sources
-            const sources = [
-                `https://fanyi.baidu.com/gettts?lan=zh&text=${encodeURIComponent(audioChar)}&spd=3&source=web`,
-                `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(audioChar)}&type=1`,
-                `https://tts.baidu.com/text2audio?cuid=baike&lan=ZH&ctp=1&pdt=301&vol=9&rate=32&per=0&tex=${encodeURIComponent(audioChar)}`
-            ];
-
-            let sourceIndex = 0;
-
-            function tryNextSource() {
-                if (sourceIndex >= sources.length) {
-                    console.error('All audio sources failed');
-                    tileElement.classList.remove('playing');
-                    hideAudioStatus();
-                    return;
+                // Try to find a Chinese voice
+                const voices = window.speechSynthesis.getVoices();
+                const chineseVoice = voices.find(v => v.lang.includes('zh'));
+                if (chineseVoice) {
+                    utterance.voice = chineseVoice;
                 }
 
-                audioElement.src = sources[sourceIndex];
-                sourceIndex++;
+                utterance.onend = function() {
+                    tileElement.classList.remove('playing');
+                    hideAudioStatus();
+                };
 
-                audioElement.play().catch(() => {
-                    console.log('Source failed, trying next...');
-                    tryNextSource();
-                });
+                utterance.onerror = function() {
+                    tileElement.classList.remove('playing');
+                    hideAudioStatus();
+                };
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                // Fallback: just show visual feedback
+                setTimeout(() => {
+                    tileElement.classList.remove('playing');
+                    hideAudioStatus();
+                }, 500);
             }
-
-            audioElement.onended = function() {
-                tileElement.classList.remove('playing');
-                hideAudioStatus();
-            };
-
-            audioElement.onerror = function() {
-                tryNextSource();
-            };
-
-            tryNextSource();
 
             // Fallback timeout
             setTimeout(() => {
                 tileElement.classList.remove('playing');
                 hideAudioStatus();
             }, 4000);
+        }
+
+        // Load voices when available
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = function() {
+                window.speechSynthesis.getVoices();
+            };
         }
 
         function createTile(item) {
