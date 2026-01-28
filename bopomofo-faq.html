@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bopomofo FAQ 注音符號常見問題</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8360c3 0%, #2ebf91 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        .faq-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .faq-item {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .faq-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .faq-question::before {
+            content: 'Q';
+            background: linear-gradient(135deg, #8360c3, #2ebf91);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .faq-answer {
+            color: #555;
+            line-height: 1.7;
+            padding-left: 38px;
+        }
+
+        .faq-answer p {
+            margin-bottom: 10px;
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #8360c3;
+        }
+
+        .bopomofo-example {
+            font-size: 1.5rem;
+            color: #8360c3;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #8360c3, #2ebf91);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            .faq-section {
+                padding: 20px;
+            }
+
+            .faq-question {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>常見問題 FAQ</h1>
+            <p>Frequently Asked Questions about Bopomofo</p>
+            <nav class="nav-links">
+                <a href="bopomofo-learning.html" class="nav-link">Learn</a>
+                <a href="bopomofo-practice.html" class="nav-link">Practice</a>
+                <a href="bopomofo-faq.html" class="nav-link active">FAQ</a>
+            </nav>
+        </header>
+
+        <div class="faq-section">
+            <div class="faq-item">
+                <div class="faq-question">What is Bopomofo (注音符號)?</div>
+                <div class="faq-answer">
+                    <p>Bopomofo, also known as Zhuyin Fuhao (注音符號) or simply Zhuyin, is a phonetic system used to transcribe Mandarin Chinese. It was introduced in China in 1918 and is still the primary method for teaching pronunciation in Taiwan today.</p>
+                    <p>Unlike Pinyin which uses Roman letters, Bopomofo uses a unique set of 37 symbols derived from Chinese characters, plus 4 tone marks.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Why learn Bopomofo instead of Pinyin?</div>
+                <div class="faq-answer">
+                    <p>There are several advantages to learning Bopomofo:</p>
+                    <div class="highlight">
+                        <p><strong>1. No interference from English pronunciation:</strong> Since Bopomofo uses unique symbols, you won't be tempted to pronounce sounds based on English letter habits (like pronouncing "x" as in English).</p>
+                        <p><strong>2. Used in Taiwan:</strong> If you plan to study, work, or travel in Taiwan, knowing Bopomofo is essential as it's used everywhere.</p>
+                        <p><strong>3. Better for tone learning:</strong> Tone marks are written alongside the characters, making them more visually prominent.</p>
+                        <p><strong>4. Used in children's books:</strong> Taiwanese children's books use Bopomofo annotations, which can be great learning materials.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Should I learn Bopomofo if I can already read Chinese?</div>
+                <div class="faq-answer">
+                    <p>Even if you can already read Chinese characters, learning Bopomofo can still be valuable for several reasons:</p>
+                    <div class="highlight">
+                        <p><strong>1. Unlock Taiwan's "secret language":</strong> Taiwanese internet users often write comments, memes, and jokes entirely in Bopomofo—it's like a secret code that people from China can't read! Understanding Bopomofo lets you in on the fun and gives you access to a whole layer of Taiwanese online culture.</p>
+                        <p><strong>2. Default keyboard in Taiwan:</strong> Most computers sold in Taiwan come with Bopomofo keyboards by default. If you ever use a computer in Taiwan, borrow a Taiwanese friend's laptop, or work with Taiwanese colleagues, knowing Bopomofo means you can type naturally on their devices.</p>
+                        <p><strong>3. Pronunciation refinement:</strong> Bopomofo can help you correct pronunciation habits, especially if you learned Chinese through pinyin and developed English-influenced pronunciation tendencies.</p>
+                        <p><strong>4. Taiwan-specific content:</strong> Children's books, educational materials, and some publications in Taiwan use Bopomofo annotations. Learning it opens up access to these resources.</p>
+                        <p><strong>5. Typing efficiency:</strong> Many native Taiwanese speakers type faster using Bopomofo input. If you interact with Taiwanese colleagues or friends, understanding their input method can be helpful.</p>
+                        <p><strong>6. Tone awareness:</strong> Bopomofo's tone marks are more visually integrated, which can help reinforce proper tone usage if this is a weak area for you.</p>
+                        <p><strong>7. Cultural connection:</strong> Understanding Bopomofo gives you insight into how Taiwanese children learn to read and provides a deeper connection to Taiwanese culture and education.</p>
+                    </div>
+                    <p>That said, if you're already fluent in reading and speaking Mandarin with good pronunciation, and don't plan to engage with Taiwanese materials or travel to Taiwan, learning Bopomofo may be lower priority. It's ultimately a tool—useful for some learners, optional for others.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How many symbols are in Bopomofo?</div>
+                <div class="faq-answer">
+                    <p>Bopomofo consists of:</p>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Category</th>
+                            <th>Count</th>
+                            <th>Examples</th>
+                        </tr>
+                        <tr>
+                            <td>Consonants (聲母)</td>
+                            <td>21</td>
+                            <td><span class="bopomofo-example">ㄅ ㄆ ㄇ ㄈ</span></td>
+                        </tr>
+                        <tr>
+                            <td>Vowels (韻母)</td>
+                            <td>16</td>
+                            <td><span class="bopomofo-example">ㄚ ㄛ ㄜ ㄧ</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tone Marks (聲調)</td>
+                            <td>5</td>
+                            <td><span class="bopomofo-example">ˉ ˊ ˇ ˋ ˙</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do the tones work in Bopomofo?</div>
+                <div class="faq-answer">
+                    <p>Mandarin Chinese has 4 main tones plus a neutral tone. In Bopomofo, these are marked as:</p>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Tone</th>
+                            <th>Mark</th>
+                            <th>Description</th>
+                            <th>Example (mā)</th>
+                        </tr>
+                        <tr>
+                            <td>1st Tone</td>
+                            <td><span class="bopomofo-example">ˉ</span> (or unmarked)</td>
+                            <td>High, flat</td>
+                            <td>媽 (mother)</td>
+                        </tr>
+                        <tr>
+                            <td>2nd Tone</td>
+                            <td><span class="bopomofo-example">ˊ</span></td>
+                            <td>Rising</td>
+                            <td>麻 (hemp)</td>
+                        </tr>
+                        <tr>
+                            <td>3rd Tone</td>
+                            <td><span class="bopomofo-example">ˇ</span></td>
+                            <td>Falling-rising (dip)</td>
+                            <td>馬 (horse)</td>
+                        </tr>
+                        <tr>
+                            <td>4th Tone</td>
+                            <td><span class="bopomofo-example">ˋ</span></td>
+                            <td>Falling</td>
+                            <td>罵 (scold)</td>
+                        </tr>
+                        <tr>
+                            <td>Neutral</td>
+                            <td><span class="bopomofo-example">˙</span></td>
+                            <td>Light, short</td>
+                            <td>嗎 (question)</td>
+                        </tr>
+                    </table>
+                    <p>Note: The first tone mark is often omitted in practice, as it's the "default" tone.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How is Bopomofo different from Pinyin?</div>
+                <div class="faq-answer">
+                    <p>Here's a comparison of how the same sounds are written:</p>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Character</th>
+                            <th>Bopomofo</th>
+                            <th>Pinyin</th>
+                        </tr>
+                        <tr>
+                            <td>中</td>
+                            <td><span class="bopomofo-example">ㄓㄨㄥ</span></td>
+                            <td>zhōng</td>
+                        </tr>
+                        <tr>
+                            <td>國</td>
+                            <td><span class="bopomofo-example">ㄍㄨㄛˊ</span></td>
+                            <td>guó</td>
+                        </tr>
+                        <tr>
+                            <td>學</td>
+                            <td><span class="bopomofo-example">ㄒㄩㄝˊ</span></td>
+                            <td>xué</td>
+                        </tr>
+                        <tr>
+                            <td>你好</td>
+                            <td><span class="bopomofo-example">ㄋㄧˇ ㄏㄠˇ</span></td>
+                            <td>nǐ hǎo</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How long does it take to learn Bopomofo?</div>
+                <div class="faq-answer">
+                    <p>Most learners can memorize all 37 symbols in about 1-2 weeks with regular practice. However, becoming fluent at reading and typing with Bopomofo typically takes 1-3 months of consistent use.</p>
+                    <div class="highlight">
+                        <p><strong>Tip:</strong> Use our <a href="bopomofo-learning.html">Learning page</a> to memorize the symbols, then practice with our <a href="bopomofo-practice.html">Practice page</a> to reinforce your knowledge!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is Bopomofo used for typing Chinese?</div>
+                <div class="faq-answer">
+                    <p>Yes! In Taiwan, Bopomofo is one of the most common input methods for typing Chinese on computers and phones. Most Taiwanese people learn to type using Bopomofo from a young age.</p>
+                    <p>The standard keyboard layout places Bopomofo symbols on the keys, and you type the pronunciation to select the character you want.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Where did the Bopomofo symbols come from?</div>
+                <div class="faq-answer">
+                    <p>The Bopomofo symbols were derived from ancient Chinese characters. Each symbol is a simplified form of a character that contains that sound. For example:</p>
+                    <div class="highlight">
+                        <p><span class="bopomofo-example">ㄅ</span> comes from 勹 (part of 包 bāo)</p>
+                        <p><span class="bopomofo-example">ㄇ</span> comes from 冂 (part of 冪 mì)</p>
+                        <p><span class="bopomofo-example">ㄈ</span> comes from 匚 (part of 匪 fěi)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I use Bopomofo to learn Cantonese or other Chinese dialects?</div>
+                <div class="faq-answer">
+                    <p>Bopomofo was specifically designed for Mandarin Chinese and doesn't cover all the sounds in other Chinese dialects like Cantonese, Hokkien, or Hakka. These dialects have their own romanization systems or phonetic notations.</p>
+                    <p>However, learning Bopomofo for Mandarin can still be helpful as a foundation, since many dialects share some common sounds.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>Learn more on our <a href="bopomofo-learning.html" style="color: white;">Learning page</a> or test yourself on the <a href="bopomofo-practice.html" style="color: white;">Practice page</a></p>
+        </footer>
+    </div>
+</body>
+</html>

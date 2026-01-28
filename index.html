@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bopomofo 注音符號 Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        .instructions {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .instruction-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instruction-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid rgba(255,255,255,0.7);
+        }
+
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 15px;
+        }
+
+        .tile-container {
+            perspective: 1000px;
+            height: 100px;
+        }
+
+        .tile {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .tile.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .tile-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: box-shadow 0.3s, transform 0.2s;
+        }
+
+        .tile-front {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        }
+
+        .tile-back {
+            background: linear-gradient(145deg, #4facfe, #00f2fe);
+            transform: rotateY(180deg);
+            color: white;
+        }
+
+        .tile:hover .tile-face {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .tile:active .tile-face {
+            transform: scale(0.95);
+        }
+
+        .tile.flipped:active .tile-back {
+            transform: rotateY(180deg) scale(0.95);
+        }
+
+        .zhuyin {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #333;
+            line-height: 1;
+        }
+
+        .pinyin {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .pinyin-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .tile.playing .tile-front {
+            animation: pulse 0.3s ease;
+            background: linear-gradient(145deg, #e8f5e9, #c8e6c9);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .audio-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .audio-status.show {
+            opacity: 1;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+                gap: 10px;
+            }
+
+            .tile-container {
+                height: 85px;
+            }
+
+            .zhuyin {
+                font-size: 2.2rem;
+            }
+
+            .instructions {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>注音符號 Bopomofo</h1>
+            <p>Interactive Zhuyin Learning Tool</p>
+            <nav class="nav-links">
+                <a href="bopomofo-learning.html" class="nav-link active">Learn</a>
+                <a href="bopomofo-practice.html" class="nav-link">Practice</a>
+                <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
+            </nav>
+        </header>
+
+        <div class="instructions">
+            <div class="instruction-item">
+                <div class="instruction-icon">👆</div>
+                <span><strong>Click</strong> to hear pronunciation</span>
+            </div>
+            <div class="instruction-item">
+                <div class="instruction-icon" style="font-size: 0.9rem;">👆👆</div>
+                <span><strong>Double-click</strong> to flip &amp; see pinyin</span>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">聲母 Consonants (Initials)</h2>
+            <div class="tiles-grid" id="consonants"></div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">韻母 Vowels (Finals)</h2>
+            <div class="tiles-grid" id="vowels"></div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">聲調 Tones</h2>
+            <div class="tiles-grid" id="tones"></div>
+        </section>
+
+        <footer>
+            <p>Click any tile to hear its sound • Double-click to see the pinyin equivalent</p>
+        </footer>
+    </div>
+
+    <div class="audio-status" id="audioStatus">🔊 Playing sound...</div>
+
+    <script>
+        // Bopomofo data with pinyin equivalents and audio character
+        const bopomofoData = {
+            consonants: [
+                { zhuyin: 'ㄅ', pinyin: 'b', audio: '玻' },
+                { zhuyin: 'ㄆ', pinyin: 'p', audio: '坡' },
+                { zhuyin: 'ㄇ', pinyin: 'm', audio: '摸' },
+                { zhuyin: 'ㄈ', pinyin: 'f', audio: '佛' },
+                { zhuyin: 'ㄉ', pinyin: 'd', audio: '得' },
+                { zhuyin: 'ㄊ', pinyin: 't', audio: '特' },
+                { zhuyin: 'ㄋ', pinyin: 'n', audio: '訥' },
+                { zhuyin: 'ㄌ', pinyin: 'l', audio: '勒' },
+                { zhuyin: 'ㄍ', pinyin: 'g', audio: '哥' },
+                { zhuyin: 'ㄎ', pinyin: 'k', audio: '科' },
+                { zhuyin: 'ㄏ', pinyin: 'h', audio: '喝' },
+                { zhuyin: 'ㄐ', pinyin: 'j', audio: '機' },
+                { zhuyin: 'ㄑ', pinyin: 'q', audio: '七' },
+                { zhuyin: 'ㄒ', pinyin: 'x', audio: '西' },
+                { zhuyin: 'ㄓ', pinyin: 'zh', audio: '知' },
+                { zhuyin: 'ㄔ', pinyin: 'ch', audio: '吃' },
+                { zhuyin: 'ㄕ', pinyin: 'sh', audio: '詩' },
+                { zhuyin: 'ㄖ', pinyin: 'r', audio: '日' },
+                { zhuyin: 'ㄗ', pinyin: 'z', audio: '資' },
+                { zhuyin: 'ㄘ', pinyin: 'c', audio: '詞' },
+                { zhuyin: 'ㄙ', pinyin: 's', audio: '絲' }
+            ],
+            vowels: [
+                { zhuyin: 'ㄚ', pinyin: 'a', audio: '啊' },
+                { zhuyin: 'ㄛ', pinyin: 'o', audio: '喔' },
+                { zhuyin: 'ㄜ', pinyin: 'e', audio: '餓' },
+                { zhuyin: 'ㄝ', pinyin: 'ê', audio: '耶' },
+                { zhuyin: 'ㄞ', pinyin: 'ai', audio: '哀' },
+                { zhuyin: 'ㄟ', pinyin: 'ei', audio: '誒' },
+                { zhuyin: 'ㄠ', pinyin: 'ao', audio: '凹' },
+                { zhuyin: 'ㄡ', pinyin: 'ou', audio: '歐' },
+                { zhuyin: 'ㄢ', pinyin: 'an', audio: '安' },
+                { zhuyin: 'ㄣ', pinyin: 'en', audio: '恩' },
+                { zhuyin: 'ㄤ', pinyin: 'ang', audio: '骯' },
+                { zhuyin: 'ㄥ', pinyin: 'eng', audio: '鞥' },
+                { zhuyin: 'ㄦ', pinyin: 'er', audio: '兒' },
+                { zhuyin: 'ㄧ', pinyin: 'i', audio: '衣' },
+                { zhuyin: 'ㄨ', pinyin: 'u', audio: '屋' },
+                { zhuyin: 'ㄩ', pinyin: 'ü', audio: '迂' }
+            ],
+            tones: [
+                { zhuyin: 'ˉ', pinyin: 'mā (1st)', audio: '媽' },
+                { zhuyin: 'ˊ', pinyin: 'má (2nd)', audio: '麻' },
+                { zhuyin: 'ˇ', pinyin: 'mǎ (3rd)', audio: '馬' },
+                { zhuyin: 'ˋ', pinyin: 'mà (4th)', audio: '罵' },
+                { zhuyin: '˙', pinyin: 'ma (neutral)', audio: '嗎' }
+            ]
+        };
+
+        let clickTimeout = null;
+        let audioCache = {};
+
+        // Create audio context for playback rate control
+        let audioContext = null;
+
+        function getAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+
+        // Hidden audio element for playback
+        let audioElement = null;
+
+        function playSound(zhuyin, audioChar, tileElement) {
+            // Show visual feedback
+            tileElement.classList.add('playing');
+            showAudioStatus(`🔊 ${zhuyin} (${audioChar})`);
+
+            // Remove existing audio element if any
+            if (audioElement) {
+                audioElement.pause();
+                audioElement.remove();
+            }
+
+            // Create audio element in the DOM (more reliable than new Audio())
+            audioElement = document.createElement('audio');
+            audioElement.style.display = 'none';
+            document.body.appendChild(audioElement);
+
+            // Try multiple TTS sources
+            const sources = [
+                `https://fanyi.baidu.com/gettts?lan=zh&text=${encodeURIComponent(audioChar)}&spd=3&source=web`,
+                `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(audioChar)}&type=1`,
+                `https://tts.baidu.com/text2audio?cuid=baike&lan=ZH&ctp=1&pdt=301&vol=9&rate=32&per=0&tex=${encodeURIComponent(audioChar)}`
+            ];
+
+            let sourceIndex = 0;
+
+            function tryNextSource() {
+                if (sourceIndex >= sources.length) {
+                    console.error('All audio sources failed');
+                    tileElement.classList.remove('playing');
+                    hideAudioStatus();
+                    return;
+                }
+
+                audioElement.src = sources[sourceIndex];
+                sourceIndex++;
+
+                audioElement.play().catch(() => {
+                    console.log('Source failed, trying next...');
+                    tryNextSource();
+                });
+            }
+
+            audioElement.onended = function() {
+                tileElement.classList.remove('playing');
+                hideAudioStatus();
+            };
+
+            audioElement.onerror = function() {
+                tryNextSource();
+            };
+
+            tryNextSource();
+
+            // Fallback timeout
+            setTimeout(() => {
+                tileElement.classList.remove('playing');
+                hideAudioStatus();
+            }, 4000);
+        }
+
+        function createTile(item) {
+            const container = document.createElement('div');
+            container.className = 'tile-container';
+
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            tile.dataset.zhuyin = item.zhuyin;
+            tile.dataset.pinyin = item.pinyin;
+            tile.dataset.audio = item.audio;
+
+            const front = document.createElement('div');
+            front.className = 'tile-face tile-front';
+            front.innerHTML = `<span class="zhuyin">${item.zhuyin}</span>`;
+
+            const back = document.createElement('div');
+            back.className = 'tile-face tile-back';
+            back.innerHTML = `
+                <span class="pinyin">${item.pinyin}</span>
+                <span class="pinyin-label">pinyin</span>
+            `;
+
+            tile.appendChild(front);
+            tile.appendChild(back);
+            container.appendChild(tile);
+
+            // Click behavior: if flipped, single click flips back; if not flipped, dblclick to flip
+            tile.addEventListener('click', (e) => {
+                if (tile.classList.contains('flipped')) {
+                    // If flipped, single click flips it back
+                    tile.classList.remove('flipped');
+                } else {
+                    // If not flipped, single click plays sound
+                    playSound(item.zhuyin, item.audio, tile);
+                }
+            });
+
+            tile.addEventListener('dblclick', (e) => {
+                // Double click - flip the tile to show pinyin
+                if (!tile.classList.contains('flipped')) {
+                    tile.classList.add('flipped');
+                }
+            });
+
+            return container;
+        }
+
+        function showAudioStatus(text) {
+            const status = document.getElementById('audioStatus');
+            status.textContent = text;
+            status.classList.add('show');
+        }
+
+        function hideAudioStatus() {
+            const status = document.getElementById('audioStatus');
+            status.classList.remove('show');
+        }
+
+        function initializeTiles() {
+            const consonantsGrid = document.getElementById('consonants');
+            const vowelsGrid = document.getElementById('vowels');
+            const tonesGrid = document.getElementById('tones');
+
+            bopomofoData.consonants.forEach(item => {
+                consonantsGrid.appendChild(createTile(item));
+            });
+
+            bopomofoData.vowels.forEach(item => {
+                vowelsGrid.appendChild(createTile(item));
+            });
+
+            bopomofoData.tones.forEach(item => {
+                tonesGrid.appendChild(createTile(item));
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeTiles);
+    </script>
+</body>
+</html>
+

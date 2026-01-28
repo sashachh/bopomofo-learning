@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bopomofo Practice 注音練習</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        .character-display {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .character {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .character-pinyin {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .character-pinyin.show {
+            opacity: 1;
+        }
+
+        .user-input {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .input-char {
+            font-size: 2.5rem;
+            background: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .input-char.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .input-char.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .input-placeholder {
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-clear {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-check {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .btn-skip {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-next {
+            background: #2ecc71;
+            color: white;
+            display: none;
+        }
+
+        .btn-backspace {
+            background: #e67e22;
+            color: white;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4ecdc4;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .score {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid rgba(255,255,255,0.7);
+        }
+
+        .tiles-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            gap: 8px;
+        }
+
+        .tile {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .tile:active {
+            transform: scale(0.95);
+        }
+
+        .tile.selected {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .tone-tile {
+            font-size: 1.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .character {
+                font-size: 5rem;
+            }
+
+            .tiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+                gap: 6px;
+            }
+
+            .tile {
+                padding: 10px 6px;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>注音練習 Bopomofo Practice</h1>
+            <nav class="nav-links">
+                <a href="bopomofo-learning.html" class="nav-link">Learn</a>
+                <a href="bopomofo-practice.html" class="nav-link active">Practice</a>
+                <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
+            </nav>
+        </header>
+
+        <div class="score">
+            Score: <span id="correct">0</span> / <span id="total">0</span>
+        </div>
+
+        <div class="toggle-container">
+            <span>Show Pinyin</span>
+            <div class="toggle-switch" id="pinyinToggle" onclick="togglePinyin()"></div>
+        </div>
+
+        <div class="character-display">
+            <div class="character" id="character">字</div>
+            <div class="character-pinyin" id="pinyin">zì</div>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="user-input" id="userInput">
+            <span class="input-placeholder">Click the bopomofo tiles below</span>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-backspace" onclick="backspace()">← Delete</button>
+            <button class="btn btn-clear" onclick="clearInput()">Clear All</button>
+            <button class="btn btn-check" onclick="checkAnswer()">Check ✓</button>
+            <button class="btn btn-skip" onclick="skipCharacter()">Skip →</button>
+            <button class="btn btn-next" id="btnNext" onclick="nextCharacter()">Next Character →</button>
+        </div>
+
+        <div class="tiles-section">
+            <h3 class="section-title">聲母 Consonants</h3>
+            <div class="tiles-grid" id="consonants"></div>
+        </div>
+
+        <div class="tiles-section">
+            <h3 class="section-title">韻母 Vowels</h3>
+            <div class="tiles-grid" id="vowels"></div>
+        </div>
+
+        <div class="tiles-section">
+            <h3 class="section-title">聲調 Tones</h3>
+            <div class="tiles-grid" id="tones"></div>
+        </div>
+    </div>
+
+    <script>
+        // Bopomofo characters
+        const consonants = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'];
+        const vowels = ['ㄚ','ㄛ','ㄜ','ㄝ','ㄞ','ㄟ','ㄠ','ㄡ','ㄢ','ㄣ','ㄤ','ㄥ','ㄦ','ㄧ','ㄨ','ㄩ'];
+        const tones = ['ˉ','ˊ','ˇ','ˋ','˙'];
+
+        // 200 common Chinese characters with their bopomofo
+        const characters = [
+            { char: '的', bopomofo: 'ㄉㄜ˙', pinyin: 'de' },
+            { char: '一', bopomofo: 'ㄧˉ', pinyin: 'yī' },
+            { char: '是', bopomofo: 'ㄕˋ', pinyin: 'shì' },
+            { char: '不', bopomofo: 'ㄅㄨˋ', pinyin: 'bù' },
+            { char: '了', bopomofo: 'ㄌㄜ˙', pinyin: 'le' },
+            { char: '在', bopomofo: 'ㄗㄞˋ', pinyin: 'zài' },
+            { char: '人', bopomofo: 'ㄖㄣˊ', pinyin: 'rén' },
+            { char: '有', bopomofo: 'ㄧㄡˇ', pinyin: 'yǒu' },
+            { char: '我', bopomofo: 'ㄨㄛˇ', pinyin: 'wǒ' },
+            { char: '他', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
+            { char: '這', bopomofo: 'ㄓㄜˋ', pinyin: 'zhè' },
+            { char: '個', bopomofo: 'ㄍㄜˋ', pinyin: 'gè' },
+            { char: '們', bopomofo: 'ㄇㄣ˙', pinyin: 'men' },
+            { char: '中', bopomofo: 'ㄓㄨㄥˉ', pinyin: 'zhōng' },
+            { char: '來', bopomofo: 'ㄌㄞˊ', pinyin: 'lái' },
+            { char: '上', bopomofo: 'ㄕㄤˋ', pinyin: 'shàng' },
+            { char: '大', bopomofo: 'ㄉㄚˋ', pinyin: 'dà' },
+            { char: '為', bopomofo: 'ㄨㄟˋ', pinyin: 'wèi' },
+            { char: '和', bopomofo: 'ㄏㄜˊ', pinyin: 'hé' },
+            { char: '國', bopomofo: 'ㄍㄨㄛˊ', pinyin: 'guó' },
+            { char: '地', bopomofo: 'ㄉㄧˋ', pinyin: 'dì' },
+            { char: '到', bopomofo: 'ㄉㄠˋ', pinyin: 'dào' },
+            { char: '以', bopomofo: 'ㄧˇ', pinyin: 'yǐ' },
+            { char: '說', bopomofo: 'ㄕㄨㄛˉ', pinyin: 'shuō' },
+            { char: '時', bopomofo: 'ㄕˊ', pinyin: 'shí' },
+            { char: '要', bopomofo: 'ㄧㄠˋ', pinyin: 'yào' },
+            { char: '就', bopomofo: 'ㄐㄧㄡˋ', pinyin: 'jiù' },
+            { char: '出', bopomofo: 'ㄔㄨˉ', pinyin: 'chū' },
+            { char: '會', bopomofo: 'ㄏㄨㄟˋ', pinyin: 'huì' },
+            { char: '可', bopomofo: 'ㄎㄜˇ', pinyin: 'kě' },
+            { char: '也', bopomofo: 'ㄧㄝˇ', pinyin: 'yě' },
+            { char: '你', bopomofo: 'ㄋㄧˇ', pinyin: 'nǐ' },
+            { char: '對', bopomofo: 'ㄉㄨㄟˋ', pinyin: 'duì' },
+            { char: '生', bopomofo: 'ㄕㄥˉ', pinyin: 'shēng' },
+            { char: '能', bopomofo: 'ㄋㄥˊ', pinyin: 'néng' },
+            { char: '而', bopomofo: 'ㄦˊ', pinyin: 'ér' },
+            { char: '子', bopomofo: 'ㄗˇ', pinyin: 'zǐ' },
+            { char: '那', bopomofo: 'ㄋㄚˋ', pinyin: 'nà' },
+            { char: '得', bopomofo: 'ㄉㄜˊ', pinyin: 'dé' },
+            { char: '於', bopomofo: 'ㄩˊ', pinyin: 'yú' },
+            { char: '著', bopomofo: 'ㄓㄜ˙', pinyin: 'zhe' },
+            { char: '下', bopomofo: 'ㄒㄧㄚˋ', pinyin: 'xià' },
+            { char: '自', bopomofo: 'ㄗˋ', pinyin: 'zì' },
+            { char: '之', bopomofo: 'ㄓˉ', pinyin: 'zhī' },
+            { char: '年', bopomofo: 'ㄋㄧㄢˊ', pinyin: 'nián' },
+            { char: '過', bopomofo: 'ㄍㄨㄛˋ', pinyin: 'guò' },
+            { char: '發', bopomofo: 'ㄈㄚˉ', pinyin: 'fā' },
+            { char: '後', bopomofo: 'ㄏㄡˋ', pinyin: 'hòu' },
+            { char: '作', bopomofo: 'ㄗㄨㄛˋ', pinyin: 'zuò' },
+            { char: '里', bopomofo: 'ㄌㄧˇ', pinyin: 'lǐ' },
+            { char: '用', bopomofo: 'ㄩㄥˋ', pinyin: 'yòng' },
+            { char: '道', bopomofo: 'ㄉㄠˋ', pinyin: 'dào' },
+            { char: '行', bopomofo: 'ㄒㄧㄥˊ', pinyin: 'xíng' },
+            { char: '所', bopomofo: 'ㄙㄨㄛˇ', pinyin: 'suǒ' },
+            { char: '然', bopomofo: 'ㄖㄢˊ', pinyin: 'rán' },
+            { char: '家', bopomofo: 'ㄐㄧㄚˉ', pinyin: 'jiā' },
+            { char: '種', bopomofo: 'ㄓㄨㄥˇ', pinyin: 'zhǒng' },
+            { char: '事', bopomofo: 'ㄕˋ', pinyin: 'shì' },
+            { char: '成', bopomofo: 'ㄔㄥˊ', pinyin: 'chéng' },
+            { char: '方', bopomofo: 'ㄈㄤˉ', pinyin: 'fāng' },
+            { char: '多', bopomofo: 'ㄉㄨㄛˉ', pinyin: 'duō' },
+            { char: '經', bopomofo: 'ㄐㄧㄥˉ', pinyin: 'jīng' },
+            { char: '麼', bopomofo: 'ㄇㄜ˙', pinyin: 'me' },
+            { char: '去', bopomofo: 'ㄑㄩˋ', pinyin: 'qù' },
+            { char: '法', bopomofo: 'ㄈㄚˇ', pinyin: 'fǎ' },
+            { char: '學', bopomofo: 'ㄒㄩㄝˊ', pinyin: 'xué' },
+            { char: '如', bopomofo: 'ㄖㄨˊ', pinyin: 'rú' },
+            { char: '都', bopomofo: 'ㄉㄡˉ', pinyin: 'dōu' },
+            { char: '同', bopomofo: 'ㄊㄨㄥˊ', pinyin: 'tóng' },
+            { char: '現', bopomofo: 'ㄒㄧㄢˋ', pinyin: 'xiàn' },
+            { char: '當', bopomofo: 'ㄉㄤˉ', pinyin: 'dāng' },
+            { char: '沒', bopomofo: 'ㄇㄟˊ', pinyin: 'méi' },
+            { char: '動', bopomofo: 'ㄉㄨㄥˋ', pinyin: 'dòng' },
+            { char: '面', bopomofo: 'ㄇㄧㄢˋ', pinyin: 'miàn' },
+            { char: '起', bopomofo: 'ㄑㄧˇ', pinyin: 'qǐ' },
+            { char: '看', bopomofo: 'ㄎㄢˋ', pinyin: 'kàn' },
+            { char: '定', bopomofo: 'ㄉㄧㄥˋ', pinyin: 'dìng' },
+            { char: '天', bopomofo: 'ㄊㄧㄢˉ', pinyin: 'tiān' },
+            { char: '分', bopomofo: 'ㄈㄣˉ', pinyin: 'fēn' },
+            { char: '還', bopomofo: 'ㄏㄞˊ', pinyin: 'hái' },
+            { char: '進', bopomofo: 'ㄐㄧㄣˋ', pinyin: 'jìn' },
+            { char: '好', bopomofo: 'ㄏㄠˇ', pinyin: 'hǎo' },
+            { char: '小', bopomofo: 'ㄒㄧㄠˇ', pinyin: 'xiǎo' },
+            { char: '部', bopomofo: 'ㄅㄨˋ', pinyin: 'bù' },
+            { char: '其', bopomofo: 'ㄑㄧˊ', pinyin: 'qí' },
+            { char: '些', bopomofo: 'ㄒㄧㄝˉ', pinyin: 'xiē' },
+            { char: '主', bopomofo: 'ㄓㄨˇ', pinyin: 'zhǔ' },
+            { char: '樣', bopomofo: 'ㄧㄤˋ', pinyin: 'yàng' },
+            { char: '理', bopomofo: 'ㄌㄧˇ', pinyin: 'lǐ' },
+            { char: '心', bopomofo: 'ㄒㄧㄣˉ', pinyin: 'xīn' },
+            { char: '她', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
+            { char: '本', bopomofo: 'ㄅㄣˇ', pinyin: 'běn' },
+            { char: '前', bopomofo: 'ㄑㄧㄢˊ', pinyin: 'qián' },
+            { char: '開', bopomofo: 'ㄎㄞˉ', pinyin: 'kāi' },
+            { char: '但', bopomofo: 'ㄉㄢˋ', pinyin: 'dàn' },
+            { char: '因', bopomofo: 'ㄧㄣˉ', pinyin: 'yīn' },
+            { char: '只', bopomofo: 'ㄓˇ', pinyin: 'zhǐ' },
+            { char: '從', bopomofo: 'ㄘㄨㄥˊ', pinyin: 'cóng' },
+            { char: '想', bopomofo: 'ㄒㄧㄤˇ', pinyin: 'xiǎng' },
+            { char: '實', bopomofo: 'ㄕˊ', pinyin: 'shí' },
+            { char: '日', bopomofo: 'ㄖˋ', pinyin: 'rì' },
+            { char: '軍', bopomofo: 'ㄐㄩㄣˉ', pinyin: 'jūn' },
+            { char: '者', bopomofo: 'ㄓㄜˇ', pinyin: 'zhě' },
+            { char: '意', bopomofo: 'ㄧˋ', pinyin: 'yì' },
+            { char: '無', bopomofo: 'ㄨˊ', pinyin: 'wú' },
+            { char: '力', bopomofo: 'ㄌㄧˋ', pinyin: 'lì' },
+            { char: '它', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
+            { char: '與', bopomofo: 'ㄩˇ', pinyin: 'yǔ' },
+            { char: '長', bopomofo: 'ㄔㄤˊ', pinyin: 'cháng' },
+            { char: '把', bopomofo: 'ㄅㄚˇ', pinyin: 'bǎ' },
+            { char: '機', bopomofo: 'ㄐㄧˉ', pinyin: 'jī' },
+            { char: '十', bopomofo: 'ㄕˊ', pinyin: 'shí' },
+            { char: '民', bopomofo: 'ㄇㄧㄣˊ', pinyin: 'mín' },
+            { char: '第', bopomofo: 'ㄉㄧˋ', pinyin: 'dì' },
+            { char: '公', bopomofo: 'ㄍㄨㄥˉ', pinyin: 'gōng' },
+            { char: '此', bopomofo: 'ㄘˇ', pinyin: 'cǐ' },
+            { char: '已', bopomofo: 'ㄧˇ', pinyin: 'yǐ' },
+            { char: '工', bopomofo: 'ㄍㄨㄥˉ', pinyin: 'gōng' },
+            { char: '使', bopomofo: 'ㄕˇ', pinyin: 'shǐ' },
+            { char: '情', bopomofo: 'ㄑㄧㄥˊ', pinyin: 'qíng' },
+            { char: '明', bopomofo: 'ㄇㄧㄥˊ', pinyin: 'míng' },
+            { char: '性', bopomofo: 'ㄒㄧㄥˋ', pinyin: 'xìng' },
+            { char: '知', bopomofo: 'ㄓˉ', pinyin: 'zhī' },
+            { char: '全', bopomofo: 'ㄑㄩㄢˊ', pinyin: 'quán' },
+            { char: '三', bopomofo: 'ㄙㄢˉ', pinyin: 'sān' },
+            { char: '又', bopomofo: 'ㄧㄡˋ', pinyin: 'yòu' },
+            { char: '關', bopomofo: 'ㄍㄨㄢˉ', pinyin: 'guān' },
+            { char: '點', bopomofo: 'ㄉㄧㄢˇ', pinyin: 'diǎn' },
+            { char: '正', bopomofo: 'ㄓㄥˋ', pinyin: 'zhèng' },
+            { char: '業', bopomofo: 'ㄧㄝˋ', pinyin: 'yè' },
+            { char: '外', bopomofo: 'ㄨㄞˋ', pinyin: 'wài' },
+            { char: '將', bopomofo: 'ㄐㄧㄤˉ', pinyin: 'jiāng' },
+            { char: '兩', bopomofo: 'ㄌㄧㄤˇ', pinyin: 'liǎng' },
+            { char: '高', bopomofo: 'ㄍㄠˉ', pinyin: 'gāo' },
+            { char: '間', bopomofo: 'ㄐㄧㄢˉ', pinyin: 'jiān' },
+            { char: '由', bopomofo: 'ㄧㄡˊ', pinyin: 'yóu' },
+            { char: '問', bopomofo: 'ㄨㄣˋ', pinyin: 'wèn' },
+            { char: '很', bopomofo: 'ㄏㄣˇ', pinyin: 'hěn' },
+            { char: '最', bopomofo: 'ㄗㄨㄟˋ', pinyin: 'zuì' },
+            { char: '重', bopomofo: 'ㄓㄨㄥˋ', pinyin: 'zhòng' },
+            { char: '並', bopomofo: 'ㄅㄧㄥˋ', pinyin: 'bìng' },
+            { char: '物', bopomofo: 'ㄨˋ', pinyin: 'wù' },
+            { char: '手', bopomofo: 'ㄕㄡˇ', pinyin: 'shǒu' },
+            { char: '應', bopomofo: 'ㄧㄥˉ', pinyin: 'yīng' },
+            { char: '戰', bopomofo: 'ㄓㄢˋ', pinyin: 'zhàn' },
+            { char: '向', bopomofo: 'ㄒㄧㄤˋ', pinyin: 'xiàng' },
+            { char: '頭', bopomofo: 'ㄊㄡˊ', pinyin: 'tóu' },
+            { char: '文', bopomofo: 'ㄨㄣˊ', pinyin: 'wén' },
+            { char: '體', bopomofo: 'ㄊㄧˇ', pinyin: 'tǐ' },
+            { char: '政', bopomofo: 'ㄓㄥˋ', pinyin: 'zhèng' },
+            { char: '美', bopomofo: 'ㄇㄟˇ', pinyin: 'měi' },
+            { char: '相', bopomofo: 'ㄒㄧㄤˉ', pinyin: 'xiāng' },
+            { char: '見', bopomofo: 'ㄐㄧㄢˋ', pinyin: 'jiàn' },
+            { char: '被', bopomofo: 'ㄅㄟˋ', pinyin: 'bèi' },
+            { char: '利', bopomofo: 'ㄌㄧˋ', pinyin: 'lì' },
+            { char: '什', bopomofo: 'ㄕˊ', pinyin: 'shí' },
+            { char: '二', bopomofo: 'ㄦˋ', pinyin: 'èr' },
+            { char: '等', bopomofo: 'ㄉㄥˇ', pinyin: 'děng' },
+            { char: '產', bopomofo: 'ㄔㄢˇ', pinyin: 'chǎn' },
+            { char: '或', bopomofo: 'ㄏㄨㄛˋ', pinyin: 'huò' },
+            { char: '新', bopomofo: 'ㄒㄧㄣˉ', pinyin: 'xīn' },
+            { char: '己', bopomofo: 'ㄐㄧˇ', pinyin: 'jǐ' },
+            { char: '制', bopomofo: 'ㄓˋ', pinyin: 'zhì' },
+            { char: '身', bopomofo: 'ㄕㄣˉ', pinyin: 'shēn' },
+            { char: '果', bopomofo: 'ㄍㄨㄛˇ', pinyin: 'guǒ' },
+            { char: '加', bopomofo: 'ㄐㄧㄚˉ', pinyin: 'jiā' },
+            { char: '西', bopomofo: 'ㄒㄧˉ', pinyin: 'xī' },
+            { char: '斯', bopomofo: 'ㄙˉ', pinyin: 'sī' },
+            { char: '月', bopomofo: 'ㄩㄝˋ', pinyin: 'yuè' },
+            { char: '話', bopomofo: 'ㄏㄨㄚˋ', pinyin: 'huà' },
+            { char: '合', bopomofo: 'ㄏㄜˊ', pinyin: 'hé' },
+            { char: '回', bopomofo: 'ㄏㄨㄟˊ', pinyin: 'huí' },
+            { char: '特', bopomofo: 'ㄊㄜˋ', pinyin: 'tè' },
+            { char: '代', bopomofo: 'ㄉㄞˋ', pinyin: 'dài' },
+            { char: '內', bopomofo: 'ㄋㄟˋ', pinyin: 'nèi' },
+            { char: '信', bopomofo: 'ㄒㄧㄣˋ', pinyin: 'xìn' },
+            { char: '表', bopomofo: 'ㄅㄧㄠˇ', pinyin: 'biǎo' },
+            { char: '化', bopomofo: 'ㄏㄨㄚˋ', pinyin: 'huà' },
+            { char: '老', bopomofo: 'ㄌㄠˇ', pinyin: 'lǎo' },
+            { char: '給', bopomofo: 'ㄍㄟˇ', pinyin: 'gěi' },
+            { char: '世', bopomofo: 'ㄕˋ', pinyin: 'shì' },
+            { char: '位', bopomofo: 'ㄨㄟˋ', pinyin: 'wèi' },
+            { char: '次', bopomofo: 'ㄘˋ', pinyin: 'cì' },
+            { char: '度', bopomofo: 'ㄉㄨˋ', pinyin: 'dù' },
+            { char: '門', bopomofo: 'ㄇㄣˊ', pinyin: 'mén' },
+            { char: '任', bopomofo: 'ㄖㄣˋ', pinyin: 'rèn' },
+            { char: '常', bopomofo: 'ㄔㄤˊ', pinyin: 'cháng' },
+            { char: '先', bopomofo: 'ㄒㄧㄢˉ', pinyin: 'xiān' },
+            { char: '海', bopomofo: 'ㄏㄞˇ', pinyin: 'hǎi' },
+            { char: '通', bopomofo: 'ㄊㄨㄥˉ', pinyin: 'tōng' },
+            { char: '教', bopomofo: 'ㄐㄧㄠˋ', pinyin: 'jiào' },
+            { char: '兒', bopomofo: 'ㄦˊ', pinyin: 'ér' },
+            { char: '原', bopomofo: 'ㄩㄢˊ', pinyin: 'yuán' },
+            { char: '東', bopomofo: 'ㄉㄨㄥˉ', pinyin: 'dōng' },
+            { char: '聲', bopomofo: 'ㄕㄥˉ', pinyin: 'shēng' },
+            { char: '提', bopomofo: 'ㄊㄧˊ', pinyin: 'tí' },
+            { char: '立', bopomofo: 'ㄌㄧˋ', pinyin: 'lì' },
+            { char: '及', bopomofo: 'ㄐㄧˊ', pinyin: 'jí' },
+            { char: '比', bopomofo: 'ㄅㄧˇ', pinyin: 'bǐ' },
+            { char: '員', bopomofo: 'ㄩㄢˊ', pinyin: 'yuán' },
+            { char: '解', bopomofo: 'ㄐㄧㄝˇ', pinyin: 'jiě' },
+            { char: '水', bopomofo: 'ㄕㄨㄟˇ', pinyin: 'shuǐ' },
+            { char: '名', bopomofo: 'ㄇㄧㄥˊ', pinyin: 'míng' },
+            { char: '真', bopomofo: 'ㄓㄣˉ', pinyin: 'zhēn' },
+            { char: '論', bopomofo: 'ㄌㄨㄣˋ', pinyin: 'lùn' },
+            { char: '處', bopomofo: 'ㄔㄨˇ', pinyin: 'chǔ' },
+            { char: '走', bopomofo: 'ㄗㄡˇ', pinyin: 'zǒu' },
+            { char: '義', bopomofo: 'ㄧˋ', pinyin: 'yì' },
+            { char: '各', bopomofo: 'ㄍㄜˋ', pinyin: 'gè' },
+            { char: '入', bopomofo: 'ㄖㄨˋ', pinyin: 'rù' },
+            { char: '幾', bopomofo: 'ㄐㄧˇ', pinyin: 'jǐ' }
+        ];
+
+        let currentCharacter = null;
+        let userInput = [];
+        let correctCount = 0;
+        let totalCount = 0;
+        let showPinyinAlways = false;
+
+        function init() {
+            // Create consonant tiles
+            const consonantsGrid = document.getElementById('consonants');
+            consonants.forEach(c => {
+                const tile = createTile(c);
+                consonantsGrid.appendChild(tile);
+            });
+
+            // Create vowel tiles
+            const vowelsGrid = document.getElementById('vowels');
+            vowels.forEach(v => {
+                const tile = createTile(v);
+                vowelsGrid.appendChild(tile);
+            });
+
+            // Create tone tiles
+            const tonesGrid = document.getElementById('tones');
+            tones.forEach(t => {
+                const tile = createTile(t, 'tone-tile');
+                tonesGrid.appendChild(tile);
+            });
+
+            // Show first character
+            nextCharacter();
+        }
+
+        function createTile(char, extraClass = '') {
+            const tile = document.createElement('div');
+            tile.className = `tile ${extraClass}`;
+            tile.textContent = char;
+            tile.addEventListener('click', () => addToInput(char));
+            return tile;
+        }
+
+        function addToInput(char) {
+            userInput.push(char);
+            updateInputDisplay();
+        }
+
+        function updateInputDisplay(highlights = null) {
+            const inputDiv = document.getElementById('userInput');
+            if (userInput.length === 0) {
+                inputDiv.innerHTML = '<span class="input-placeholder">Click the bopomofo tiles below</span>';
+            } else {
+                inputDiv.innerHTML = userInput.map((c, i) => {
+                    let className = 'input-char';
+                    if (highlights && i < highlights.length) {
+                        className += highlights[i] ? ' correct' : ' incorrect';
+                    }
+                    return `<span class="${className}">${c}</span>`;
+                }).join('');
+            }
+        }
+
+        function backspace() {
+            if (userInput.length > 0) {
+                userInput.pop();
+                updateInputDisplay();
+                hideFeedback();
+            }
+        }
+
+        function togglePinyin() {
+            showPinyinAlways = !showPinyinAlways;
+            const toggle = document.getElementById('pinyinToggle');
+            const pinyin = document.getElementById('pinyin');
+
+            if (showPinyinAlways) {
+                toggle.classList.add('active');
+                pinyin.classList.add('show');
+            } else {
+                toggle.classList.remove('active');
+                // Only hide if not already revealed by correct answer
+                if (!document.getElementById('btnNext').style.display ||
+                    document.getElementById('btnNext').style.display === 'none') {
+                    pinyin.classList.remove('show');
+                }
+            }
+        }
+
+        function clearInput() {
+            userInput = [];
+            updateInputDisplay();
+            hideFeedback();
+        }
+
+        function checkAnswer() {
+            if (!currentCharacter || userInput.length === 0) return;
+
+            const userAnswer = userInput.join('');
+            const correctAnswer = currentCharacter.bopomofo;
+            const correctChars = [...correctAnswer];
+
+            const feedback = document.getElementById('feedback');
+            const btnNext = document.getElementById('btnNext');
+
+            if (userAnswer === correctAnswer) {
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '✓ Correct! 正確！';
+                correctCount++;
+                totalCount++;
+                updateScore();
+                btnNext.style.display = 'inline-block';
+                document.getElementById('pinyin').classList.add('show');
+                // Highlight all as correct
+                const allCorrect = userInput.map(() => true);
+                updateInputDisplay(allCorrect);
+            } else {
+                // Check which characters are correct
+                const highlights = userInput.map((char, index) => {
+                    return index < correctChars.length && char === correctChars[index];
+                });
+                updateInputDisplay(highlights);
+
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = `✗ Incorrect. Try again!<br><small>Hint: ${correctAnswer.length} characters needed</small>`;
+            }
+        }
+
+        function skipCharacter() {
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback incorrect';
+            feedback.innerHTML = `Answer: ${currentCharacter.bopomofo} (${currentCharacter.pinyin})`;
+            document.getElementById('pinyin').classList.add('show');
+            document.getElementById('btnNext').style.display = 'inline-block';
+            totalCount++;
+            updateScore();
+        }
+
+        function nextCharacter() {
+            // Pick a random character
+            currentCharacter = characters[Math.floor(Math.random() * characters.length)];
+
+            // Update display
+            document.getElementById('character').textContent = currentCharacter.char;
+            document.getElementById('pinyin').textContent = currentCharacter.pinyin;
+
+            // Handle pinyin visibility based on toggle
+            if (showPinyinAlways) {
+                document.getElementById('pinyin').classList.add('show');
+            } else {
+                document.getElementById('pinyin').classList.remove('show');
+            }
+
+            // Clear input and feedback
+            clearInput();
+            document.getElementById('btnNext').style.display = 'none';
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback').className = 'feedback';
+        }
+
+        function updateScore() {
+            document.getElementById('correct').textContent = correctCount;
+            document.getElementById('total').textContent = totalCount;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
