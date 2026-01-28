@@ -89,6 +89,27 @@
             opacity: 1;
         }
 
+        .btn-sound {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-sound:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-sound:active {
+            transform: scale(0.95);
+        }
+
         .user-input {
             background: rgba(255,255,255,0.95);
             border-radius: 15px;
@@ -336,6 +357,7 @@
         <div class="character-display">
             <div class="character" id="character">字</div>
             <div class="character-pinyin" id="pinyin">zì</div>
+            <button class="btn-sound" onclick="playCharacterSound()" title="Hear pronunciation">🔊 Hear</button>
         </div>
 
         <div class="feedback" id="feedback"></div>
@@ -751,6 +773,30 @@
         function updateScore() {
             document.getElementById('correct').textContent = correctCount;
             document.getElementById('total').textContent = totalCount;
+        }
+
+        function playCharacterSound() {
+            if (!currentCharacter) return;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(currentCharacter.char);
+                utterance.lang = 'zh-TW';
+                utterance.rate = 0.8;
+
+                const voices = window.speechSynthesis.getVoices();
+                const chineseVoice = voices.find(v => v.lang.includes('zh-TW')) ||
+                                     voices.find(v => v.lang.includes('zh'));
+                if (chineseVoice) utterance.voice = chineseVoice;
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Preload voices
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
         }
 
         // Initialize on page load
