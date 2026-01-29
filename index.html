@@ -345,59 +345,56 @@
     <div class="audio-status" id="audioStatus">🔊 Playing sound...</div>
 
     <script>
-        // GCIN voice data CDN base URL (Taiwan MOE standard pronunciation)
-        const GCIN_BASE = 'https://audreyt.github.io/gcin-voice-data/mp3';
-
-        // Bopomofo data with pinyin equivalents and GCIN audio paths
-        // Format: { syllable: 'ㄅㄛ', tone: 1 } -> /ㄅㄛ/1.mp3
+        // Bopomofo data with pinyin equivalents
+        // Audio files use Chinese character mnemonics stored in audio/ folder
         const bopomofoData = {
             consonants: [
-                { zhuyin: 'ㄅ', pinyin: 'b', syllable: 'ㄅㄛ', tone: 0 },
-                { zhuyin: 'ㄆ', pinyin: 'p', syllable: 'ㄆㄛ', tone: 0 },
-                { zhuyin: 'ㄇ', pinyin: 'm', syllable: 'ㄇㄛ', tone: 0 },
-                { zhuyin: 'ㄈ', pinyin: 'f', syllable: 'ㄈㄛ', tone: 2 },
-                { zhuyin: 'ㄉ', pinyin: 'd', syllable: 'ㄉㄜ', tone: 2 },
-                { zhuyin: 'ㄊ', pinyin: 't', syllable: 'ㄊㄜ', tone: 4 },
-                { zhuyin: 'ㄋ', pinyin: 'n', syllable: 'ㄋㄜ', tone: 1 },
-                { zhuyin: 'ㄌ', pinyin: 'l', syllable: 'ㄌㄜ', tone: 4 },
-                { zhuyin: 'ㄍ', pinyin: 'g', syllable: 'ㄍㄜ', tone: 1 },
-                { zhuyin: 'ㄎ', pinyin: 'k', syllable: 'ㄎㄜ', tone: 2 },
-                { zhuyin: 'ㄏ', pinyin: 'h', syllable: 'ㄏㄜ', tone: 2 },
-                { zhuyin: 'ㄐ', pinyin: 'j', syllable: 'ㄐㄧ', tone: 1 },
-                { zhuyin: 'ㄑ', pinyin: 'q', syllable: 'ㄑㄧ', tone: 1 },
-                { zhuyin: 'ㄒ', pinyin: 'x', syllable: 'ㄒㄧ', tone: 1 },
-                { zhuyin: 'ㄓ', pinyin: 'zh', syllable: 'ㄓ', tone: 0 },
-                { zhuyin: 'ㄔ', pinyin: 'ch', syllable: 'ㄔ', tone: 0 },
-                { zhuyin: 'ㄕ', pinyin: 'sh', syllable: 'ㄕ', tone: 0 },
-                { zhuyin: 'ㄖ', pinyin: 'r', syllable: 'ㄖ', tone: 4 },
-                { zhuyin: 'ㄗ', pinyin: 'z', syllable: 'ㄗ', tone: 0 },
-                { zhuyin: 'ㄘ', pinyin: 'c', syllable: 'ㄘ', tone: 0 },
-                { zhuyin: 'ㄙ', pinyin: 's', syllable: 'ㄙ', tone: 0 }
+                { zhuyin: 'ㄅ', pinyin: 'b', audio: '玻' },
+                { zhuyin: 'ㄆ', pinyin: 'p', audio: '坡' },
+                { zhuyin: 'ㄇ', pinyin: 'm', audio: '摸' },
+                { zhuyin: 'ㄈ', pinyin: 'f', audio: '佛' },
+                { zhuyin: 'ㄉ', pinyin: 'd', audio: '得' },
+                { zhuyin: 'ㄊ', pinyin: 't', audio: '特' },
+                { zhuyin: 'ㄋ', pinyin: 'n', audio: '訥' },
+                { zhuyin: 'ㄌ', pinyin: 'l', audio: '勒' },
+                { zhuyin: 'ㄍ', pinyin: 'g', audio: '哥' },
+                { zhuyin: 'ㄎ', pinyin: 'k', audio: '科' },
+                { zhuyin: 'ㄏ', pinyin: 'h', audio: '喝' },
+                { zhuyin: 'ㄐ', pinyin: 'j', audio: '機' },
+                { zhuyin: 'ㄑ', pinyin: 'q', audio: '七' },
+                { zhuyin: 'ㄒ', pinyin: 'x', audio: '西' },
+                { zhuyin: 'ㄓ', pinyin: 'zh', audio: '知' },
+                { zhuyin: 'ㄔ', pinyin: 'ch', audio: '吃' },
+                { zhuyin: 'ㄕ', pinyin: 'sh', audio: '詩' },
+                { zhuyin: 'ㄖ', pinyin: 'r', audio: '日' },
+                { zhuyin: 'ㄗ', pinyin: 'z', audio: '資' },
+                { zhuyin: 'ㄘ', pinyin: 'c', audio: '次' },
+                { zhuyin: 'ㄙ', pinyin: 's', audio: '絲' }
             ],
             vowels: [
-                { zhuyin: 'ㄚ', pinyin: 'a', syllable: 'ㄚ', tone: 0 },
-                { zhuyin: 'ㄛ', pinyin: 'o', syllable: 'ㄛ', tone: 0 },
-                { zhuyin: 'ㄜ', pinyin: 'e', syllable: 'ㄜ', tone: 4 },
-                { zhuyin: 'ㄝ', pinyin: 'ê', syllable: 'ㄧㄝ', tone: 0 },
-                { zhuyin: 'ㄞ', pinyin: 'ai', syllable: 'ㄞ', tone: 0 },
-                { zhuyin: 'ㄟ', pinyin: 'ei', syllable: 'ㄟ', tone: 0 },
-                { zhuyin: 'ㄠ', pinyin: 'ao', syllable: 'ㄠ', tone: 0 },
-                { zhuyin: 'ㄡ', pinyin: 'ou', syllable: 'ㄡ', tone: 3 },
-                { zhuyin: 'ㄢ', pinyin: 'an', syllable: 'ㄢ', tone: 0 },
-                { zhuyin: 'ㄣ', pinyin: 'en', syllable: 'ㄣ', tone: 0 },
-                { zhuyin: 'ㄤ', pinyin: 'ang', syllable: 'ㄤ', tone: 0 },
-                { zhuyin: 'ㄥ', pinyin: 'eng', syllable: 'ㄥ', tone: 0 },
-                { zhuyin: 'ㄦ', pinyin: 'er', syllable: 'ㄦ', tone: 0, noAudio: true },
-                { zhuyin: 'ㄧ', pinyin: 'i', syllable: 'ㄧ', tone: 0 },
-                { zhuyin: 'ㄨ', pinyin: 'u', syllable: 'ㄨ', tone: 0 },
-                { zhuyin: 'ㄩ', pinyin: 'ü', syllable: 'ㄩ', tone: 0 }
+                { zhuyin: 'ㄚ', pinyin: 'a', audio: '啊' },
+                { zhuyin: 'ㄛ', pinyin: 'o', audio: '喔' },
+                { zhuyin: 'ㄜ', pinyin: 'e', audio: '餓' },
+                { zhuyin: 'ㄝ', pinyin: 'ê', audio: '耶' },
+                { zhuyin: 'ㄞ', pinyin: 'ai', audio: '哀' },
+                { zhuyin: 'ㄟ', pinyin: 'ei', audio: '誒' },
+                { zhuyin: 'ㄠ', pinyin: 'ao', audio: '凹' },
+                { zhuyin: 'ㄡ', pinyin: 'ou', audio: '歐' },
+                { zhuyin: 'ㄢ', pinyin: 'an', audio: '安' },
+                { zhuyin: 'ㄣ', pinyin: 'en', audio: '恩' },
+                { zhuyin: 'ㄤ', pinyin: 'ang', audio: '骯' },
+                { zhuyin: 'ㄥ', pinyin: 'eng', audio: '鞥' },
+                { zhuyin: 'ㄦ', pinyin: 'er', audio: '兒' },
+                { zhuyin: 'ㄧ', pinyin: 'i', audio: '衣' },
+                { zhuyin: 'ㄨ', pinyin: 'u', audio: '屋' },
+                { zhuyin: 'ㄩ', pinyin: 'ü', audio: '迂' }
             ],
             tones: [
-                { zhuyin: 'ˉ', pinyin: 'mā (1st)', syllable: 'ㄇㄚ', tone: 1 },
-                { zhuyin: 'ˊ', pinyin: 'má (2nd)', syllable: 'ㄇㄚ', tone: 2 },
-                { zhuyin: 'ˇ', pinyin: 'mǎ (3rd)', syllable: 'ㄇㄚ', tone: 3 },
-                { zhuyin: 'ˋ', pinyin: 'mà (4th)', syllable: 'ㄇㄚ', tone: 4 },
-                { zhuyin: '˙', pinyin: 'ma (neutral)', syllable: 'ㄇㄚ', tone: 1 }
+                { zhuyin: 'ˉ', pinyin: 'mā (1st)', audio: '媽' },
+                { zhuyin: 'ˊ', pinyin: 'má (2nd)', audio: '麻' },
+                { zhuyin: 'ˇ', pinyin: 'mǎ (3rd)', audio: '馬' },
+                { zhuyin: 'ˋ', pinyin: 'mà (4th)', audio: '罵' },
+                { zhuyin: '˙', pinyin: 'ma (neutral)', audio: '嗎' }
             ]
         };
 
@@ -406,10 +403,10 @@
         // Hidden audio element for playback
         let audioElement = null;
 
-        function playSound(zhuyin, syllable, tone, tileElement) {
+        function playSound(audioFile, tileElement) {
             // Show visual feedback
             tileElement.classList.add('playing');
-            showAudioStatus(`🔊 ${zhuyin} (${syllable})`);
+            showAudioStatus(`🔊 Playing...`);
 
             // Remove existing audio element if any
             if (audioElement) {
@@ -422,11 +419,8 @@
             audioElement.style.display = 'none';
             document.body.appendChild(audioElement);
 
-            // Use GCIN voice data CDN (Taiwan MOE standard pronunciation)
-            // Format: unmarked folder = tone 1, numbered = tones 2-4
-            // e.g., /mp3/ㄇㄚ/3.mp3 (tone 1), /mp3/ㄇㄚ2/3.mp3 (tone 2)
-            const folder = (tone === 0 || tone === 1) ? syllable : `${syllable}${tone}`;
-            audioElement.src = `${GCIN_BASE}/${encodeURIComponent(folder)}/3.mp3`;
+            // Use local audio files
+            audioElement.src = `audio/${encodeURIComponent(audioFile)}.mp3`;
 
             audioElement.onended = function() {
                 tileElement.classList.remove('playing');
@@ -434,7 +428,7 @@
             };
 
             audioElement.onerror = function() {
-                console.error('Audio failed to load:', syllable, tone);
+                console.error('Audio failed to load:', audioFile);
                 tileElement.classList.remove('playing');
                 hideAudioStatus();
             };
@@ -460,8 +454,8 @@
             tile.className = 'tile';
             tile.dataset.zhuyin = item.zhuyin;
             tile.dataset.pinyin = item.pinyin;
-            tile.dataset.syllable = item.syllable;
-            tile.dataset.tone = item.tone;
+            // Audio file is either item.audio (for tones) or item.zhuyin (for consonants/vowels)
+            tile.dataset.audio = item.audio || item.zhuyin;
 
             const front = document.createElement('div');
             front.className = 'tile-face tile-front';
@@ -485,7 +479,8 @@
                     tile.classList.remove('flipped');
                 } else {
                     // If not flipped, single click plays sound
-                    playSound(item.zhuyin, item.syllable, item.tone, tile);
+                    const audioFile = item.audio || item.zhuyin;
+                    playSound(audioFile, tile);
                 }
             });
 

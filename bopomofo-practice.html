@@ -418,57 +418,55 @@
     </div>
 
     <script>
-        // GCIN voice data CDN base URL (Taiwan MOE standard pronunciation)
-        const GCIN_BASE = 'https://audreyt.github.io/gcin-voice-data/mp3';
-
+        // Bopomofo data - audio files use Chinese character mnemonics in audio/ folder
         const bopomofoData = {
             consonants: [
-                { symbol: 'ㄅ', pinyin: 'b', syllable: 'ㄅㄛ', tone: 0 },
-                { symbol: 'ㄆ', pinyin: 'p', syllable: 'ㄆㄛ', tone: 0 },
-                { symbol: 'ㄇ', pinyin: 'm', syllable: 'ㄇㄛ', tone: 0 },
-                { symbol: 'ㄈ', pinyin: 'f', syllable: 'ㄈㄛ', tone: 2 },
-                { symbol: 'ㄉ', pinyin: 'd', syllable: 'ㄉㄜ', tone: 2 },
-                { symbol: 'ㄊ', pinyin: 't', syllable: 'ㄊㄜ', tone: 4 },
-                { symbol: 'ㄋ', pinyin: 'n', syllable: 'ㄋㄜ', tone: 1 },
-                { symbol: 'ㄌ', pinyin: 'l', syllable: 'ㄌㄜ', tone: 4 },
-                { symbol: 'ㄍ', pinyin: 'g', syllable: 'ㄍㄜ', tone: 1 },
-                { symbol: 'ㄎ', pinyin: 'k', syllable: 'ㄎㄜ', tone: 2 },
-                { symbol: 'ㄏ', pinyin: 'h', syllable: 'ㄏㄜ', tone: 2 },
-                { symbol: 'ㄐ', pinyin: 'j', syllable: 'ㄐㄧ', tone: 1 },
-                { symbol: 'ㄑ', pinyin: 'q', syllable: 'ㄑㄧ', tone: 1 },
-                { symbol: 'ㄒ', pinyin: 'x', syllable: 'ㄒㄧ', tone: 1 },
-                { symbol: 'ㄓ', pinyin: 'zh', syllable: 'ㄓ', tone: 0 },
-                { symbol: 'ㄔ', pinyin: 'ch', syllable: 'ㄔ', tone: 0 },
-                { symbol: 'ㄕ', pinyin: 'sh', syllable: 'ㄕ', tone: 0 },
-                { symbol: 'ㄖ', pinyin: 'r', syllable: 'ㄖ', tone: 4 },
-                { symbol: 'ㄗ', pinyin: 'z', syllable: 'ㄗ', tone: 0 },
-                { symbol: 'ㄘ', pinyin: 'c', syllable: 'ㄘ', tone: 0 },
-                { symbol: 'ㄙ', pinyin: 's', syllable: 'ㄙ', tone: 0 }
+                { symbol: 'ㄅ', pinyin: 'b', audio: '玻' },
+                { symbol: 'ㄆ', pinyin: 'p', audio: '坡' },
+                { symbol: 'ㄇ', pinyin: 'm', audio: '摸' },
+                { symbol: 'ㄈ', pinyin: 'f', audio: '佛' },
+                { symbol: 'ㄉ', pinyin: 'd', audio: '得' },
+                { symbol: 'ㄊ', pinyin: 't', audio: '特' },
+                { symbol: 'ㄋ', pinyin: 'n', audio: '訥' },
+                { symbol: 'ㄌ', pinyin: 'l', audio: '勒' },
+                { symbol: 'ㄍ', pinyin: 'g', audio: '哥' },
+                { symbol: 'ㄎ', pinyin: 'k', audio: '科' },
+                { symbol: 'ㄏ', pinyin: 'h', audio: '喝' },
+                { symbol: 'ㄐ', pinyin: 'j', audio: '機' },
+                { symbol: 'ㄑ', pinyin: 'q', audio: '七' },
+                { symbol: 'ㄒ', pinyin: 'x', audio: '西' },
+                { symbol: 'ㄓ', pinyin: 'zh', audio: '知' },
+                { symbol: 'ㄔ', pinyin: 'ch', audio: '吃' },
+                { symbol: 'ㄕ', pinyin: 'sh', audio: '詩' },
+                { symbol: 'ㄖ', pinyin: 'r', audio: '日' },
+                { symbol: 'ㄗ', pinyin: 'z', audio: '資' },
+                { symbol: 'ㄘ', pinyin: 'c', audio: '次' },
+                { symbol: 'ㄙ', pinyin: 's', audio: '絲' }
             ],
             vowels: [
-                { symbol: 'ㄚ', pinyin: 'a', syllable: 'ㄚ', tone: 0 },
-                { symbol: 'ㄛ', pinyin: 'o', syllable: 'ㄛ', tone: 0 },
-                { symbol: 'ㄜ', pinyin: 'e', syllable: 'ㄜ', tone: 4 },
-                { symbol: 'ㄝ', pinyin: 'ê', syllable: 'ㄧㄝ', tone: 0 },
-                { symbol: 'ㄞ', pinyin: 'ai', syllable: 'ㄞ', tone: 0 },
-                { symbol: 'ㄟ', pinyin: 'ei', syllable: 'ㄟ', tone: 0 },
-                { symbol: 'ㄠ', pinyin: 'ao', syllable: 'ㄠ', tone: 0 },
-                { symbol: 'ㄡ', pinyin: 'ou', syllable: 'ㄡ', tone: 3 },
-                { symbol: 'ㄢ', pinyin: 'an', syllable: 'ㄢ', tone: 0 },
-                { symbol: 'ㄣ', pinyin: 'en', syllable: 'ㄣ', tone: 0 },
-                { symbol: 'ㄤ', pinyin: 'ang', syllable: 'ㄤ', tone: 0 },
-                { symbol: 'ㄥ', pinyin: 'eng', syllable: 'ㄥ', tone: 0 },
-                { symbol: 'ㄦ', pinyin: 'er', syllable: 'ㄦ', tone: 0, noAudio: true },
-                { symbol: 'ㄧ', pinyin: 'i', syllable: 'ㄧ', tone: 0 },
-                { symbol: 'ㄨ', pinyin: 'u', syllable: 'ㄨ', tone: 0 },
-                { symbol: 'ㄩ', pinyin: 'ü', syllable: 'ㄩ', tone: 0 }
+                { symbol: 'ㄚ', pinyin: 'a', audio: '啊' },
+                { symbol: 'ㄛ', pinyin: 'o', audio: '喔' },
+                { symbol: 'ㄜ', pinyin: 'e', audio: '餓' },
+                { symbol: 'ㄝ', pinyin: 'ê', audio: '耶' },
+                { symbol: 'ㄞ', pinyin: 'ai', audio: '哀' },
+                { symbol: 'ㄟ', pinyin: 'ei', audio: '誒' },
+                { symbol: 'ㄠ', pinyin: 'ao', audio: '凹' },
+                { symbol: 'ㄡ', pinyin: 'ou', audio: '歐' },
+                { symbol: 'ㄢ', pinyin: 'an', audio: '安' },
+                { symbol: 'ㄣ', pinyin: 'en', audio: '恩' },
+                { symbol: 'ㄤ', pinyin: 'ang', audio: '骯' },
+                { symbol: 'ㄥ', pinyin: 'eng', audio: '鞥' },
+                { symbol: 'ㄦ', pinyin: 'er', audio: '兒' },
+                { symbol: 'ㄧ', pinyin: 'i', audio: '衣' },
+                { symbol: 'ㄨ', pinyin: 'u', audio: '屋' },
+                { symbol: 'ㄩ', pinyin: 'ü', audio: '迂' }
             ],
             tones: [
-                { symbol: 'ˉ', pinyin: '1st (high)', syllable: 'ㄇㄚ', tone: 1 },
-                { symbol: 'ˊ', pinyin: '2nd (rising)', syllable: 'ㄇㄚ', tone: 2 },
-                { symbol: 'ˇ', pinyin: '3rd (dip)', syllable: 'ㄇㄚ', tone: 3 },
-                { symbol: 'ˋ', pinyin: '4th (falling)', syllable: 'ㄇㄚ', tone: 4 },
-                { symbol: '˙', pinyin: 'neutral', syllable: 'ㄇㄚ', tone: 1 }
+                { symbol: 'ˉ', pinyin: '1st (high)', audio: '媽' },
+                { symbol: 'ˊ', pinyin: '2nd (rising)', audio: '麻' },
+                { symbol: 'ˇ', pinyin: '3rd (dip)', audio: '馬' },
+                { symbol: 'ˋ', pinyin: '4th (falling)', audio: '罵' },
+                { symbol: '˙', pinyin: 'neutral', audio: '嗎' }
             ]
         };
 
@@ -526,9 +524,9 @@
 
         function playSound() {
             const card = currentCards[currentIndex];
-            // Format: unmarked folder = tone 1, numbered = tones 2-4
-            const folder = (card.tone === 0 || card.tone === 1) ? card.syllable : `${card.syllable}${card.tone}`;
-            const audioUrl = `${GCIN_BASE}/${encodeURIComponent(folder)}/3.mp3`;
+            // Use local audio files - audio is either card.audio (for tones) or card.symbol
+            const audioFile = card.audio || card.symbol;
+            const audioUrl = `audio/${encodeURIComponent(audioFile)}.mp3`;
             const audio = new Audio(audioUrl);
             audio.play().catch(err => console.error('Audio error:', err));
         }
