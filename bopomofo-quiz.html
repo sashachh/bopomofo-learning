@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bopomo.fo - Quiz</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYYX315R8M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HYYX315R8M');
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            height: 100vh;
+            padding: 10px;
+            gap: 12px;
+        }
+
+        /* Left side - Keyboard */
+        .keyboard-panel {
+            width: 420px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .keyboard-section {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 8px;
+        }
+
+        .keyboard-label {
+            color: white;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
+        .keyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .keyboard-grid.vowels {
+            grid-template-columns: repeat(8, 1fr);
+        }
+
+        .keyboard-grid.tones {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .key {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 4px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.15s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            user-select: none;
+        }
+
+        .key:hover {
+            background: #e8f5e9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .key:active {
+            transform: scale(0.95);
+            background: #c8e6c9;
+        }
+
+        .key.tone {
+            font-size: 1.6rem;
+            padding: 10px 4px;
+        }
+
+        /* Right side - Practice area */
+        .practice-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .logo-text .bopo {
+            color: white;
+        }
+
+        .logo-text .mo {
+            color: #ffd700;
+        }
+
+        .logo-text .fo {
+            color: #ff6b6b;
+        }
+
+        .logo-text .dot {
+            color: #4ecdc4;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        /* Character display */
+        .character-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .character-area {
+            text-align: center;
+        }
+
+        .character {
+            font-size: 5.5rem;
+            font-weight: bold;
+            color: #333;
+            line-height: 1;
+        }
+
+        .character-pinyin {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .character-pinyin.show {
+            opacity: 1;
+        }
+
+        .btn-sound {
+            width: 65px;
+            height: 65px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-sound:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5);
+        }
+
+        .btn-sound:active {
+            transform: scale(0.95);
+        }
+
+        /* Input area */
+        .input-area {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 16px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .input-char {
+            font-size: 1.6rem;
+            background: #f5f5f5;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .input-char.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .input-char.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .input-placeholder {
+            color: #999;
+            font-size: 1rem;
+        }
+
+        /* Controls */
+        .controls-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls-left {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .controls-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-backspace {
+            background: #e67e22;
+            color: white;
+        }
+
+        .btn-clear {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-check {
+            background: #4ecdc4;
+            color: white;
+            padding: 10px 25px;
+        }
+
+        .btn-skip {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-next {
+            background: #2ecc71;
+            color: white;
+            display: none;
+        }
+
+        /* Score and toggle */
+        .score-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .score {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 15px;
+            border-radius: 15px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4ecdc4;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        /* Feedback */
+        .feedback {
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column-reverse;
+                overflow-y: auto;
+            }
+
+            .keyboard-panel {
+                width: 100%;
+            }
+
+            .character {
+                font-size: 5rem;
+            }
+
+            .btn-sound {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left: Keyboard -->
+        <div class="keyboard-panel">
+            <div class="keyboard-section">
+                <div class="keyboard-label">聲母 Consonants</div>
+                <div class="keyboard-grid" id="consonants"></div>
+            </div>
+            <div class="keyboard-section">
+                <div class="keyboard-label">韻母 Vowels</div>
+                <div class="keyboard-grid vowels" id="vowels"></div>
+            </div>
+            <div class="keyboard-section">
+                <div class="keyboard-label">聲調 Tones</div>
+                <div class="keyboard-grid tones" id="tones"></div>
+            </div>
+        </div>
+
+        <!-- Right: Practice area -->
+        <div class="practice-panel">
+            <div class="header">
+                <div class="logo">
+                    <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
+                    <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link">Learn</a>
+                    <a href="bopomofo-practice.html" class="nav-link">Practice</a>
+                    <a href="bopomofo-quiz.html" class="nav-link active">Quiz</a>
+                    <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
+                </nav>
+            </div>
+
+            <div class="score-toggle">
+                <div class="score">Score: <span id="correct">0</span> / <span id="total">0</span></div>
+                <div class="toggle-container">
+                    <span>Show Pinyin</span>
+                    <div class="toggle-switch" id="pinyinToggle" onclick="togglePinyin()"></div>
+                </div>
+            </div>
+
+            <div class="character-card">
+                <div class="character-area">
+                    <div class="character" id="character">字</div>
+                    <div class="character-pinyin" id="pinyin">zì</div>
+                </div>
+                <button class="btn-sound" id="soundBtn" title="Hear pronunciation">🔊</button>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="input-area" id="userInput">
+                <span class="input-placeholder">Type using the keyboard on the left</span>
+            </div>
+
+            <div class="controls-row">
+                <div class="controls-left">
+                    <button class="btn btn-backspace" onclick="backspace()">← Delete</button>
+                    <button class="btn btn-clear" onclick="clearInput()">Clear</button>
+                    <button class="btn btn-skip" onclick="skipCharacter()">Skip</button>
+                </div>
+                <div class="controls-right">
+                    <button class="btn btn-check" onclick="checkAnswer()">Check ✓</button>
+                    <button class="btn btn-next" id="btnNext" onclick="nextCharacter()">Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const consonants = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'];
+        const vowels = ['ㄚ','ㄛ','ㄜ','ㄝ','ㄞ','ㄟ','ㄠ','ㄡ','ㄢ','ㄣ','ㄤ','ㄥ','ㄦ','ㄧ','ㄨ','ㄩ'];
+        const tones = ['ˉ','ˊ','ˇ','ˋ','˙'];
+
+        const characters = [
+            { char: '的', bopomofo: 'ㄉㄜ˙', pinyin: 'de' },
+            { char: '一', bopomofo: 'ㄧˉ', pinyin: 'yī' },
+            { char: '是', bopomofo: 'ㄕˋ', pinyin: 'shì' },
+            { char: '不', bopomofo: 'ㄅㄨˋ', pinyin: 'bù' },
+            { char: '了', bopomofo: 'ㄌㄜ˙', pinyin: 'le' },
+            { char: '在', bopomofo: 'ㄗㄞˋ', pinyin: 'zài' },
+            { char: '人', bopomofo: 'ㄖㄣˊ', pinyin: 'rén' },
+            { char: '有', bopomofo: 'ㄧㄡˇ', pinyin: 'yǒu' },
+            { char: '我', bopomofo: 'ㄨㄛˇ', pinyin: 'wǒ' },
+            { char: '他', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
+            { char: '這', bopomofo: 'ㄓㄜˋ', pinyin: 'zhè' },
+            { char: '個', bopomofo: 'ㄍㄜˋ', pinyin: 'gè' },
+            { char: '們', bopomofo: 'ㄇㄣ˙', pinyin: 'men' },
+            { char: '中', bopomofo: 'ㄓㄨㄥˉ', pinyin: 'zhōng' },
+            { char: '來', bopomofo: 'ㄌㄞˊ', pinyin: 'lái' },
+            { char: '上', bopomofo: 'ㄕㄤˋ', pinyin: 'shàng' },
+            { char: '大', bopomofo: 'ㄉㄚˋ', pinyin: 'dà' },
+            { char: '為', bopomofo: 'ㄨㄟˋ', pinyin: 'wèi' },
+            { char: '和', bopomofo: 'ㄏㄜˊ', pinyin: 'hé' },
+            { char: '國', bopomofo: 'ㄍㄨㄛˊ', pinyin: 'guó' },
+            { char: '地', bopomofo: 'ㄉㄧˋ', pinyin: 'dì' },
+            { char: '到', bopomofo: 'ㄉㄠˋ', pinyin: 'dào' },
+            { char: '以', bopomofo: 'ㄧˇ', pinyin: 'yǐ' },
+            { char: '說', bopomofo: 'ㄕㄨㄛˉ', pinyin: 'shuō' },
+            { char: '時', bopomofo: 'ㄕˊ', pinyin: 'shí' },
+            { char: '要', bopomofo: 'ㄧㄠˋ', pinyin: 'yào' },
+            { char: '就', bopomofo: 'ㄐㄧㄡˋ', pinyin: 'jiù' },
+            { char: '出', bopomofo: 'ㄔㄨˉ', pinyin: 'chū' },
+            { char: '會', bopomofo: 'ㄏㄨㄟˋ', pinyin: 'huì' },
+            { char: '可', bopomofo: 'ㄎㄜˇ', pinyin: 'kě' },
+            { char: '也', bopomofo: 'ㄧㄝˇ', pinyin: 'yě' },
+            { char: '你', bopomofo: 'ㄋㄧˇ', pinyin: 'nǐ' },
+            { char: '對', bopomofo: 'ㄉㄨㄟˋ', pinyin: 'duì' },
+            { char: '生', bopomofo: 'ㄕㄥˉ', pinyin: 'shēng' },
+            { char: '能', bopomofo: 'ㄋㄥˊ', pinyin: 'néng' },
+            { char: '而', bopomofo: 'ㄦˊ', pinyin: 'ér' },
+            { char: '子', bopomofo: 'ㄗˇ', pinyin: 'zǐ' },
+            { char: '那', bopomofo: 'ㄋㄚˋ', pinyin: 'nà' },
+            { char: '得', bopomofo: 'ㄉㄜˊ', pinyin: 'dé' },
+            { char: '於', bopomofo: 'ㄩˊ', pinyin: 'yú' },
+            { char: '著', bopomofo: 'ㄓㄜ˙', pinyin: 'zhe' },
+            { char: '下', bopomofo: 'ㄒㄧㄚˋ', pinyin: 'xià' },
+            { char: '自', bopomofo: 'ㄗˋ', pinyin: 'zì' },
+            { char: '之', bopomofo: 'ㄓˉ', pinyin: 'zhī' },
+            { char: '年', bopomofo: 'ㄋㄧㄢˊ', pinyin: 'nián' },
+            { char: '過', bopomofo: 'ㄍㄨㄛˋ', pinyin: 'guò' },
+            { char: '發', bopomofo: 'ㄈㄚˉ', pinyin: 'fā' },
+            { char: '後', bopomofo: 'ㄏㄡˋ', pinyin: 'hòu' },
+            { char: '作', bopomofo: 'ㄗㄨㄛˋ', pinyin: 'zuò' },
+            { char: '里', bopomofo: 'ㄌㄧˇ', pinyin: 'lǐ' },
+            { char: '用', bopomofo: 'ㄩㄥˋ', pinyin: 'yòng' },
+            { char: '道', bopomofo: 'ㄉㄠˋ', pinyin: 'dào' },
+            { char: '行', bopomofo: 'ㄒㄧㄥˊ', pinyin: 'xíng' },
+            { char: '所', bopomofo: 'ㄙㄨㄛˇ', pinyin: 'suǒ' },
+            { char: '然', bopomofo: 'ㄖㄢˊ', pinyin: 'rán' },
+            { char: '家', bopomofo: 'ㄐㄧㄚˉ', pinyin: 'jiā' },
+            { char: '種', bopomofo: 'ㄓㄨㄥˇ', pinyin: 'zhǒng' },
+            { char: '事', bopomofo: 'ㄕˋ', pinyin: 'shì' },
+            { char: '成', bopomofo: 'ㄔㄥˊ', pinyin: 'chéng' },
+            { char: '方', bopomofo: 'ㄈㄤˉ', pinyin: 'fāng' },
+            { char: '多', bopomofo: 'ㄉㄨㄛˉ', pinyin: 'duō' },
+            { char: '經', bopomofo: 'ㄐㄧㄥˉ', pinyin: 'jīng' },
+            { char: '麼', bopomofo: 'ㄇㄜ˙', pinyin: 'me' },
+            { char: '去', bopomofo: 'ㄑㄩˋ', pinyin: 'qù' },
+            { char: '法', bopomofo: 'ㄈㄚˇ', pinyin: 'fǎ' },
+            { char: '學', bopomofo: 'ㄒㄩㄝˊ', pinyin: 'xué' },
+            { char: '如', bopomofo: 'ㄖㄨˊ', pinyin: 'rú' },
+            { char: '都', bopomofo: 'ㄉㄡˉ', pinyin: 'dōu' },
+            { char: '同', bopomofo: 'ㄊㄨㄥˊ', pinyin: 'tóng' },
+            { char: '現', bopomofo: 'ㄒㄧㄢˋ', pinyin: 'xiàn' },
+            { char: '當', bopomofo: 'ㄉㄤˉ', pinyin: 'dāng' },
+            { char: '沒', bopomofo: 'ㄇㄟˊ', pinyin: 'méi' },
+            { char: '動', bopomofo: 'ㄉㄨㄥˋ', pinyin: 'dòng' },
+            { char: '面', bopomofo: 'ㄇㄧㄢˋ', pinyin: 'miàn' },
+            { char: '起', bopomofo: 'ㄑㄧˇ', pinyin: 'qǐ' },
+            { char: '看', bopomofo: 'ㄎㄢˋ', pinyin: 'kàn' },
+            { char: '定', bopomofo: 'ㄉㄧㄥˋ', pinyin: 'dìng' },
+            { char: '天', bopomofo: 'ㄊㄧㄢˉ', pinyin: 'tiān' },
+            { char: '分', bopomofo: 'ㄈㄣˉ', pinyin: 'fēn' },
+            { char: '還', bopomofo: 'ㄏㄞˊ', pinyin: 'hái' },
+            { char: '進', bopomofo: 'ㄐㄧㄣˋ', pinyin: 'jìn' },
+            { char: '好', bopomofo: 'ㄏㄠˇ', pinyin: 'hǎo' },
+            { char: '小', bopomofo: 'ㄒㄧㄠˇ', pinyin: 'xiǎo' },
+            { char: '部', bopomofo: 'ㄅㄨˋ', pinyin: 'bù' },
+            { char: '其', bopomofo: 'ㄑㄧˊ', pinyin: 'qí' },
+            { char: '些', bopomofo: 'ㄒㄧㄝˉ', pinyin: 'xiē' },
+            { char: '主', bopomofo: 'ㄓㄨˇ', pinyin: 'zhǔ' },
+            { char: '樣', bopomofo: 'ㄧㄤˋ', pinyin: 'yàng' },
+            { char: '理', bopomofo: 'ㄌㄧˇ', pinyin: 'lǐ' },
+            { char: '心', bopomofo: 'ㄒㄧㄣˉ', pinyin: 'xīn' },
+            { char: '她', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
+            { char: '本', bopomofo: 'ㄅㄣˇ', pinyin: 'běn' },
+            { char: '前', bopomofo: 'ㄑㄧㄢˊ', pinyin: 'qián' },
+            { char: '開', bopomofo: 'ㄎㄞˉ', pinyin: 'kāi' },
+            { char: '但', bopomofo: 'ㄉㄢˋ', pinyin: 'dàn' },
+            { char: '因', bopomofo: 'ㄧㄣˉ', pinyin: 'yīn' },
+            { char: '只', bopomofo: 'ㄓˇ', pinyin: 'zhǐ' },
+            { char: '從', bopomofo: 'ㄘㄨㄥˊ', pinyin: 'cóng' },
+            { char: '想', bopomofo: 'ㄒㄧㄤˇ', pinyin: 'xiǎng' },
+            { char: '實', bopomofo: 'ㄕˊ', pinyin: 'shí' }
+        ];
+
+        let currentCharacter = null;
+        let userInput = [];
+        let correctCount = 0;
+        let totalCount = 0;
+        let showPinyinAlways = false;
+        let audioElement = null;
+
+        function init() {
+            const consonantsGrid = document.getElementById('consonants');
+            consonants.forEach(c => consonantsGrid.appendChild(createKey(c)));
+
+            const vowelsGrid = document.getElementById('vowels');
+            vowels.forEach(v => vowelsGrid.appendChild(createKey(v)));
+
+            const tonesGrid = document.getElementById('tones');
+            tones.forEach(t => tonesGrid.appendChild(createKey(t, 'tone')));
+
+            nextCharacter();
+        }
+
+        function createKey(char, extraClass = '') {
+            const key = document.createElement('div');
+            key.className = `key ${extraClass}`;
+            key.textContent = char;
+            key.addEventListener('click', () => addToInput(char));
+            return key;
+        }
+
+        function addToInput(char) {
+            userInput.push(char);
+            updateInputDisplay();
+        }
+
+        function updateInputDisplay(highlights = null) {
+            const inputDiv = document.getElementById('userInput');
+            if (userInput.length === 0) {
+                inputDiv.innerHTML = '<span class="input-placeholder">Type using the keyboard on the left</span>';
+            } else {
+                inputDiv.innerHTML = userInput.map((c, i) => {
+                    let className = 'input-char';
+                    if (highlights && i < highlights.length) {
+                        className += highlights[i] ? ' correct' : ' incorrect';
+                    }
+                    return `<span class="${className}">${c}</span>`;
+                }).join('');
+            }
+        }
+
+        function backspace() {
+            if (userInput.length > 0) {
+                userInput.pop();
+                updateInputDisplay();
+                hideFeedback();
+            }
+        }
+
+        function togglePinyin() {
+            showPinyinAlways = !showPinyinAlways;
+            const toggle = document.getElementById('pinyinToggle');
+            const pinyin = document.getElementById('pinyin');
+
+            if (showPinyinAlways) {
+                toggle.classList.add('active');
+                pinyin.classList.add('show');
+            } else {
+                toggle.classList.remove('active');
+                if (!document.getElementById('btnNext').style.display ||
+                    document.getElementById('btnNext').style.display === 'none') {
+                    pinyin.classList.remove('show');
+                }
+            }
+        }
+
+        function clearInput() {
+            userInput = [];
+            updateInputDisplay();
+            hideFeedback();
+        }
+
+        function checkAnswer() {
+            if (!currentCharacter || userInput.length === 0) return;
+
+            const userAnswer = userInput.join('');
+            const correctAnswer = currentCharacter.bopomofo;
+            const correctChars = [...correctAnswer];
+
+            const feedback = document.getElementById('feedback');
+            const btnNext = document.getElementById('btnNext');
+
+            if (userAnswer === correctAnswer) {
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '✓ Correct! 正確！';
+                correctCount++;
+                totalCount++;
+                updateScore();
+                btnNext.style.display = 'inline-block';
+                document.getElementById('pinyin').classList.add('show');
+                updateInputDisplay(userInput.map(() => true));
+            } else {
+                const highlights = userInput.map((char, index) => {
+                    return index < correctChars.length && char === correctChars[index];
+                });
+                updateInputDisplay(highlights);
+
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = `✗ Try again! (${correctAnswer.length} symbols needed)`;
+            }
+        }
+
+        function skipCharacter() {
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback incorrect';
+            feedback.innerHTML = `Answer: ${currentCharacter.bopomofo} (${currentCharacter.pinyin})`;
+            document.getElementById('pinyin').classList.add('show');
+            document.getElementById('btnNext').style.display = 'inline-block';
+            totalCount++;
+            updateScore();
+        }
+
+        function nextCharacter() {
+            currentCharacter = characters[Math.floor(Math.random() * characters.length)];
+            document.getElementById('character').textContent = currentCharacter.char;
+            document.getElementById('pinyin').textContent = currentCharacter.pinyin;
+
+            if (showPinyinAlways) {
+                document.getElementById('pinyin').classList.add('show');
+            } else {
+                document.getElementById('pinyin').classList.remove('show');
+            }
+
+            clearInput();
+            document.getElementById('btnNext').style.display = 'none';
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback').className = 'feedback';
+        }
+
+        function updateScore() {
+            document.getElementById('correct').textContent = correctCount;
+            document.getElementById('total').textContent = totalCount;
+        }
+
+        function playCharacterSound() {
+            if (!currentCharacter) return;
+
+            const btn = document.getElementById('soundBtn');
+            btn.style.opacity = '0.5';
+
+            if (audioElement) {
+                audioElement.pause();
+                audioElement.remove();
+            }
+
+            audioElement = document.createElement('audio');
+            audioElement.src = `audio/${currentCharacter.char}.mp3`;
+
+            audioElement.onended = () => btn.style.opacity = '1';
+            audioElement.onerror = () => btn.style.opacity = '1';
+            audioElement.play().catch(() => btn.style.opacity = '1');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            document.getElementById('soundBtn').addEventListener('click', playCharacterSound);
+        });
+    </script>
+</body>
+</html>

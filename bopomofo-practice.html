@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bopomo.fo - Practice</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYYX315R8M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HYYX315R8M');
+    </script>
     <style>
         * {
             margin: 0;
@@ -13,118 +22,77 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            height: 100vh;
-            overflow: hidden;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .main-container {
-            display: flex;
-            height: 100vh;
-            padding: 15px;
-            gap: 15px;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* Left side - Keyboard */
-        .keyboard-panel {
-            width: 320px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .keyboard-section {
-            background: rgba(255,255,255,0.15);
-            border-radius: 12px;
-            padding: 10px;
-        }
-
-        .keyboard-label {
-            color: white;
-            font-size: 0.75rem;
-            margin-bottom: 6px;
-            opacity: 0.9;
-        }
-
-        .keyboard-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .keyboard-grid.vowels {
-            grid-template-columns: repeat(8, 1fr);
-        }
-
-        .keyboard-grid.tones {
-            grid-template-columns: repeat(5, 1fr);
-        }
-
-        .key {
-            background: white;
-            border-radius: 8px;
-            padding: 12px 4px;
+        header {
             text-align: center;
-            cursor: pointer;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #333;
-            transition: all 0.15s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            user-select: none;
+            color: white;
+            margin-bottom: 30px;
         }
 
-        .key:hover {
-            background: #e8f5e9;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .key:active {
-            transform: scale(0.95);
-            background: #c8e6c9;
-        }
-
-        .key.tone {
-            font-size: 1.6rem;
-            padding: 10px 4px;
-        }
-
-        /* Right side - Practice area */
-        .practice-panel {
-            flex: 1;
+        .logo {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-width: 0;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .logo-text .bopo {
             color: white;
         }
 
-        .header h1 {
-            font-size: 1.3rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        .logo-text .mo {
+            color: #ffd700;
+        }
+
+        .logo-text .fo {
+            color: #ff6b6b;
+        }
+
+        .logo-text .dot {
+            color: #4ecdc4;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         .nav-links {
             display: flex;
-            gap: 8px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .nav-link {
             color: white;
             text-decoration: none;
             background: rgba(255,255,255,0.2);
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 25px;
             transition: background 0.3s;
         }
 
@@ -137,600 +105,499 @@
             font-weight: bold;
         }
 
-        /* Character display */
-        .character-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px 30px;
+        /* Controls */
+        .controls {
             display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .control-btn.active {
+            background: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        /* Progress */
+        .progress {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* Flashcard */
+        .flashcard-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            width: 300px;
+            height: 350px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 25px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
-        .character-area {
-            text-align: center;
+        .flashcard-front {
+            background: white;
         }
 
-        .character {
-            font-size: 5.5rem;
+        .flashcard-back {
+            background: linear-gradient(145deg, #4facfe, #00f2fe);
+            transform: rotateY(180deg);
+            color: white;
+        }
+
+        .flashcard-symbol {
+            font-size: 8rem;
             font-weight: bold;
             color: #333;
             line-height: 1;
         }
 
-        .character-pinyin {
-            font-size: 1.2rem;
+        .flashcard-hint {
+            font-size: 1rem;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        .flashcard-answer {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .flashcard-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        .flashcard-type {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
             color: #666;
-            margin-top: 8px;
-            opacity: 0;
-            transition: opacity 0.3s;
         }
 
-        .character-pinyin.show {
-            opacity: 1;
+        .flashcard-back .flashcard-type {
+            color: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.2);
         }
 
-        .btn-sound {
-            width: 65px;
-            height: 65px;
-            border: none;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+        /* Navigation buttons */
+        .nav-buttons {
             display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .btn-sound:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5);
-        }
-
-        .btn-sound:active {
-            transform: scale(0.95);
-        }
-
-        /* Input area */
-        .input-area {
+        .nav-btn {
             background: white;
-            border-radius: 10px;
-            padding: 12px 16px;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-        }
-
-        .input-char {
-            font-size: 1.6rem;
-            background: #f5f5f5;
-            padding: 6px 10px;
-            border-radius: 6px;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
             color: #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: all 0.3s;
         }
 
-        .input-char.correct {
-            background: #d4edda;
-            color: #155724;
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
-        .input-char.incorrect {
-            background: #f8d7da;
-            color: #721c24;
+        .nav-btn:active {
+            transform: scale(0.95);
         }
 
-        .input-placeholder {
-            color: #999;
-            font-size: 1rem;
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
-        /* Controls */
-        .controls-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        .nav-btn:disabled:hover {
+            transform: none;
         }
 
-        .controls-left {
-            display: flex;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .controls-right {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-weight: 500;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .btn-backspace {
-            background: #e67e22;
-            color: white;
-        }
-
-        .btn-clear {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .btn-check {
-            background: #4ecdc4;
-            color: white;
-            padding: 10px 25px;
-        }
-
-        .btn-skip {
-            background: #95a5a6;
-            color: white;
-        }
-
-        .btn-next {
-            background: #2ecc71;
-            color: white;
-            display: none;
-        }
-
-        /* Score and toggle */
-        .score-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .score {
-            background: rgba(255,255,255,0.2);
-            padding: 6px 15px;
-            border-radius: 15px;
-        }
-
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 44px;
-            height: 24px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .toggle-switch.active {
-            background: #4ecdc4;
-        }
-
-        .toggle-switch::after {
-            content: '';
+        /* Sound button */
+        .sound-btn {
             position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 20px;
-            height: 20px;
-            background: white;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            transition: transform 0.3s;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
         }
 
-        .toggle-switch.active::after {
-            transform: translateX(20px);
+        .sound-btn:hover {
+            background: rgba(0,0,0,0.2);
         }
 
-        /* Feedback */
-        .feedback {
+        .flashcard-back .sound-btn {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .flashcard-back .sound-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Instructions */
+        .instructions {
             text-align: center;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            display: none;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
-        .feedback.correct {
-            background: #d4edda;
-            color: #155724;
-            display: block;
+        footer {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
         }
 
-        .feedback.incorrect {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column-reverse;
-                overflow-y: auto;
+        @media (max-width: 600px) {
+            .flashcard {
+                width: 260px;
+                height: 300px;
             }
 
-            .keyboard-panel {
-                width: 100%;
+            .flashcard-symbol {
+                font-size: 6rem;
             }
 
-            .character {
-                font-size: 5rem;
+            .flashcard-answer {
+                font-size: 2.5rem;
             }
 
-            .btn-sound {
-                width: 60px;
-                height: 60px;
-                font-size: 2rem;
+            .nav-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- Left: Keyboard -->
-        <div class="keyboard-panel">
-            <div class="keyboard-section">
-                <div class="keyboard-label">聲母 Consonants</div>
-                <div class="keyboard-grid" id="consonants"></div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
+                <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
             </div>
-            <div class="keyboard-section">
-                <div class="keyboard-label">韻母 Vowels</div>
-                <div class="keyboard-grid vowels" id="vowels"></div>
-            </div>
-            <div class="keyboard-section">
-                <div class="keyboard-label">聲調 Tones</div>
-                <div class="keyboard-grid tones" id="tones"></div>
+            <p>Flashcard Practice</p>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Learn</a>
+                <a href="bopomofo-practice.html" class="nav-link active">Practice</a>
+                <a href="bopomofo-quiz.html" class="nav-link">Quiz</a>
+                <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
+            </nav>
+        </header>
+
+        <div class="controls">
+            <button class="control-btn active" data-filter="all">All</button>
+            <button class="control-btn" data-filter="consonants">Consonants</button>
+            <button class="control-btn" data-filter="vowels">Vowels</button>
+            <button class="control-btn" data-filter="tones">Tones</button>
+            <button class="control-btn" id="shuffleBtn">Shuffle</button>
+        </div>
+
+        <div class="progress">
+            <span id="progressText">Card 1 of 42</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 2.4%"></div>
             </div>
         </div>
 
-        <!-- Right: Practice area -->
-        <div class="practice-panel">
-            <div class="header">
-                <h1>bopomo.fo</h1>
-                <nav class="nav-links">
-                    <a href="index.html" class="nav-link">Learn</a>
-                    <a href="bopomofo-practice.html" class="nav-link active">Practice</a>
-                    <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
-                </nav>
-            </div>
-
-            <div class="score-toggle">
-                <div class="score">Score: <span id="correct">0</span> / <span id="total">0</span></div>
-                <div class="toggle-container">
-                    <span>Show Pinyin</span>
-                    <div class="toggle-switch" id="pinyinToggle" onclick="togglePinyin()"></div>
-                </div>
-            </div>
-
-            <div class="character-card">
-                <div class="character-area">
-                    <div class="character" id="character">字</div>
-                    <div class="character-pinyin" id="pinyin">zì</div>
-                </div>
-                <button class="btn-sound" id="soundBtn" title="Hear pronunciation">🔊</button>
-            </div>
-
-            <div class="feedback" id="feedback"></div>
-
-            <div class="input-area" id="userInput">
-                <span class="input-placeholder">Type using the keyboard on the left</span>
-            </div>
-
-            <div class="controls-row">
-                <div class="controls-left">
-                    <button class="btn btn-backspace" onclick="backspace()">← Delete</button>
-                    <button class="btn btn-clear" onclick="clearInput()">Clear</button>
-                    <button class="btn btn-skip" onclick="skipCharacter()">Skip</button>
-                </div>
-                <div class="controls-right">
-                    <button class="btn btn-check" onclick="checkAnswer()">Check ✓</button>
-                    <button class="btn btn-next" id="btnNext" onclick="nextCharacter()">Next →</button>
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <span class="flashcard-type" id="cardType">Consonant</span>
+                        <span class="flashcard-symbol" id="cardSymbol">ㄅ</span>
+                        <span class="flashcard-hint">Click to flip</span>
+                        <button class="sound-btn" id="soundBtnFront">🔊</button>
+                    </div>
+                    <div class="flashcard-back">
+                        <span class="flashcard-type" id="cardTypeBack">Consonant</span>
+                        <span class="flashcard-answer" id="cardAnswer">b</span>
+                        <span class="flashcard-label">pinyin</span>
+                        <button class="sound-btn" id="soundBtnBack">🔊</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn">←</button>
+            <button class="nav-btn" id="nextBtn">→</button>
+        </div>
+
+        <div class="instructions">
+            <p>Click the card to flip • Use arrows to navigate • Press Space to flip, ← → to navigate</p>
+        </div>
+
+        <footer>
+            <p>Master all 42 symbols to read Bopomofo fluently!</p>
+        </footer>
     </div>
 
     <script>
-        const consonants = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'];
-        const vowels = ['ㄚ','ㄛ','ㄜ','ㄝ','ㄞ','ㄟ','ㄠ','ㄡ','ㄢ','ㄣ','ㄤ','ㄥ','ㄦ','ㄧ','ㄨ','ㄩ'];
-        const tones = ['ˉ','ˊ','ˇ','ˋ','˙'];
+        // GCIN voice data CDN base URL (Taiwan MOE standard pronunciation)
+        const GCIN_BASE = 'https://audreyt.github.io/gcin-voice-data/mp3';
 
-        const characters = [
-            { char: '的', bopomofo: 'ㄉㄜ˙', pinyin: 'de' },
-            { char: '一', bopomofo: 'ㄧˉ', pinyin: 'yī' },
-            { char: '是', bopomofo: 'ㄕˋ', pinyin: 'shì' },
-            { char: '不', bopomofo: 'ㄅㄨˋ', pinyin: 'bù' },
-            { char: '了', bopomofo: 'ㄌㄜ˙', pinyin: 'le' },
-            { char: '在', bopomofo: 'ㄗㄞˋ', pinyin: 'zài' },
-            { char: '人', bopomofo: 'ㄖㄣˊ', pinyin: 'rén' },
-            { char: '有', bopomofo: 'ㄧㄡˇ', pinyin: 'yǒu' },
-            { char: '我', bopomofo: 'ㄨㄛˇ', pinyin: 'wǒ' },
-            { char: '他', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
-            { char: '這', bopomofo: 'ㄓㄜˋ', pinyin: 'zhè' },
-            { char: '個', bopomofo: 'ㄍㄜˋ', pinyin: 'gè' },
-            { char: '們', bopomofo: 'ㄇㄣ˙', pinyin: 'men' },
-            { char: '中', bopomofo: 'ㄓㄨㄥˉ', pinyin: 'zhōng' },
-            { char: '來', bopomofo: 'ㄌㄞˊ', pinyin: 'lái' },
-            { char: '上', bopomofo: 'ㄕㄤˋ', pinyin: 'shàng' },
-            { char: '大', bopomofo: 'ㄉㄚˋ', pinyin: 'dà' },
-            { char: '為', bopomofo: 'ㄨㄟˋ', pinyin: 'wèi' },
-            { char: '和', bopomofo: 'ㄏㄜˊ', pinyin: 'hé' },
-            { char: '國', bopomofo: 'ㄍㄨㄛˊ', pinyin: 'guó' },
-            { char: '地', bopomofo: 'ㄉㄧˋ', pinyin: 'dì' },
-            { char: '到', bopomofo: 'ㄉㄠˋ', pinyin: 'dào' },
-            { char: '以', bopomofo: 'ㄧˇ', pinyin: 'yǐ' },
-            { char: '說', bopomofo: 'ㄕㄨㄛˉ', pinyin: 'shuō' },
-            { char: '時', bopomofo: 'ㄕˊ', pinyin: 'shí' },
-            { char: '要', bopomofo: 'ㄧㄠˋ', pinyin: 'yào' },
-            { char: '就', bopomofo: 'ㄐㄧㄡˋ', pinyin: 'jiù' },
-            { char: '出', bopomofo: 'ㄔㄨˉ', pinyin: 'chū' },
-            { char: '會', bopomofo: 'ㄏㄨㄟˋ', pinyin: 'huì' },
-            { char: '可', bopomofo: 'ㄎㄜˇ', pinyin: 'kě' },
-            { char: '也', bopomofo: 'ㄧㄝˇ', pinyin: 'yě' },
-            { char: '你', bopomofo: 'ㄋㄧˇ', pinyin: 'nǐ' },
-            { char: '對', bopomofo: 'ㄉㄨㄟˋ', pinyin: 'duì' },
-            { char: '生', bopomofo: 'ㄕㄥˉ', pinyin: 'shēng' },
-            { char: '能', bopomofo: 'ㄋㄥˊ', pinyin: 'néng' },
-            { char: '而', bopomofo: 'ㄦˊ', pinyin: 'ér' },
-            { char: '子', bopomofo: 'ㄗˇ', pinyin: 'zǐ' },
-            { char: '那', bopomofo: 'ㄋㄚˋ', pinyin: 'nà' },
-            { char: '得', bopomofo: 'ㄉㄜˊ', pinyin: 'dé' },
-            { char: '於', bopomofo: 'ㄩˊ', pinyin: 'yú' },
-            { char: '著', bopomofo: 'ㄓㄜ˙', pinyin: 'zhe' },
-            { char: '下', bopomofo: 'ㄒㄧㄚˋ', pinyin: 'xià' },
-            { char: '自', bopomofo: 'ㄗˋ', pinyin: 'zì' },
-            { char: '之', bopomofo: 'ㄓˉ', pinyin: 'zhī' },
-            { char: '年', bopomofo: 'ㄋㄧㄢˊ', pinyin: 'nián' },
-            { char: '過', bopomofo: 'ㄍㄨㄛˋ', pinyin: 'guò' },
-            { char: '發', bopomofo: 'ㄈㄚˉ', pinyin: 'fā' },
-            { char: '後', bopomofo: 'ㄏㄡˋ', pinyin: 'hòu' },
-            { char: '作', bopomofo: 'ㄗㄨㄛˋ', pinyin: 'zuò' },
-            { char: '里', bopomofo: 'ㄌㄧˇ', pinyin: 'lǐ' },
-            { char: '用', bopomofo: 'ㄩㄥˋ', pinyin: 'yòng' },
-            { char: '道', bopomofo: 'ㄉㄠˋ', pinyin: 'dào' },
-            { char: '行', bopomofo: 'ㄒㄧㄥˊ', pinyin: 'xíng' },
-            { char: '所', bopomofo: 'ㄙㄨㄛˇ', pinyin: 'suǒ' },
-            { char: '然', bopomofo: 'ㄖㄢˊ', pinyin: 'rán' },
-            { char: '家', bopomofo: 'ㄐㄧㄚˉ', pinyin: 'jiā' },
-            { char: '種', bopomofo: 'ㄓㄨㄥˇ', pinyin: 'zhǒng' },
-            { char: '事', bopomofo: 'ㄕˋ', pinyin: 'shì' },
-            { char: '成', bopomofo: 'ㄔㄥˊ', pinyin: 'chéng' },
-            { char: '方', bopomofo: 'ㄈㄤˉ', pinyin: 'fāng' },
-            { char: '多', bopomofo: 'ㄉㄨㄛˉ', pinyin: 'duō' },
-            { char: '經', bopomofo: 'ㄐㄧㄥˉ', pinyin: 'jīng' },
-            { char: '麼', bopomofo: 'ㄇㄜ˙', pinyin: 'me' },
-            { char: '去', bopomofo: 'ㄑㄩˋ', pinyin: 'qù' },
-            { char: '法', bopomofo: 'ㄈㄚˇ', pinyin: 'fǎ' },
-            { char: '學', bopomofo: 'ㄒㄩㄝˊ', pinyin: 'xué' },
-            { char: '如', bopomofo: 'ㄖㄨˊ', pinyin: 'rú' },
-            { char: '都', bopomofo: 'ㄉㄡˉ', pinyin: 'dōu' },
-            { char: '同', bopomofo: 'ㄊㄨㄥˊ', pinyin: 'tóng' },
-            { char: '現', bopomofo: 'ㄒㄧㄢˋ', pinyin: 'xiàn' },
-            { char: '當', bopomofo: 'ㄉㄤˉ', pinyin: 'dāng' },
-            { char: '沒', bopomofo: 'ㄇㄟˊ', pinyin: 'méi' },
-            { char: '動', bopomofo: 'ㄉㄨㄥˋ', pinyin: 'dòng' },
-            { char: '面', bopomofo: 'ㄇㄧㄢˋ', pinyin: 'miàn' },
-            { char: '起', bopomofo: 'ㄑㄧˇ', pinyin: 'qǐ' },
-            { char: '看', bopomofo: 'ㄎㄢˋ', pinyin: 'kàn' },
-            { char: '定', bopomofo: 'ㄉㄧㄥˋ', pinyin: 'dìng' },
-            { char: '天', bopomofo: 'ㄊㄧㄢˉ', pinyin: 'tiān' },
-            { char: '分', bopomofo: 'ㄈㄣˉ', pinyin: 'fēn' },
-            { char: '還', bopomofo: 'ㄏㄞˊ', pinyin: 'hái' },
-            { char: '進', bopomofo: 'ㄐㄧㄣˋ', pinyin: 'jìn' },
-            { char: '好', bopomofo: 'ㄏㄠˇ', pinyin: 'hǎo' },
-            { char: '小', bopomofo: 'ㄒㄧㄠˇ', pinyin: 'xiǎo' },
-            { char: '部', bopomofo: 'ㄅㄨˋ', pinyin: 'bù' },
-            { char: '其', bopomofo: 'ㄑㄧˊ', pinyin: 'qí' },
-            { char: '些', bopomofo: 'ㄒㄧㄝˉ', pinyin: 'xiē' },
-            { char: '主', bopomofo: 'ㄓㄨˇ', pinyin: 'zhǔ' },
-            { char: '樣', bopomofo: 'ㄧㄤˋ', pinyin: 'yàng' },
-            { char: '理', bopomofo: 'ㄌㄧˇ', pinyin: 'lǐ' },
-            { char: '心', bopomofo: 'ㄒㄧㄣˉ', pinyin: 'xīn' },
-            { char: '她', bopomofo: 'ㄊㄚˉ', pinyin: 'tā' },
-            { char: '本', bopomofo: 'ㄅㄣˇ', pinyin: 'běn' },
-            { char: '前', bopomofo: 'ㄑㄧㄢˊ', pinyin: 'qián' },
-            { char: '開', bopomofo: 'ㄎㄞˉ', pinyin: 'kāi' },
-            { char: '但', bopomofo: 'ㄉㄢˋ', pinyin: 'dàn' },
-            { char: '因', bopomofo: 'ㄧㄣˉ', pinyin: 'yīn' },
-            { char: '只', bopomofo: 'ㄓˇ', pinyin: 'zhǐ' },
-            { char: '從', bopomofo: 'ㄘㄨㄥˊ', pinyin: 'cóng' },
-            { char: '想', bopomofo: 'ㄒㄧㄤˇ', pinyin: 'xiǎng' },
-            { char: '實', bopomofo: 'ㄕˊ', pinyin: 'shí' }
-        ];
+        const bopomofoData = {
+            consonants: [
+                { symbol: 'ㄅ', pinyin: 'b', syllable: 'ㄅㄛ', tone: 1 },
+                { symbol: 'ㄆ', pinyin: 'p', syllable: 'ㄆㄛ', tone: 1 },
+                { symbol: 'ㄇ', pinyin: 'm', syllable: 'ㄇㄛ', tone: 1 },
+                { symbol: 'ㄈ', pinyin: 'f', syllable: 'ㄈㄛ', tone: 2 },
+                { symbol: 'ㄉ', pinyin: 'd', syllable: 'ㄉㄜ', tone: 2 },
+                { symbol: 'ㄊ', pinyin: 't', syllable: 'ㄊㄜ', tone: 4 },
+                { symbol: 'ㄋ', pinyin: 'n', syllable: 'ㄋㄜ', tone: 4 },
+                { symbol: 'ㄌ', pinyin: 'l', syllable: 'ㄌㄜ', tone: 4 },
+                { symbol: 'ㄍ', pinyin: 'g', syllable: 'ㄍㄜ', tone: 1 },
+                { symbol: 'ㄎ', pinyin: 'k', syllable: 'ㄎㄜ', tone: 1 },
+                { symbol: 'ㄏ', pinyin: 'h', syllable: 'ㄏㄜ', tone: 1 },
+                { symbol: 'ㄐ', pinyin: 'j', syllable: 'ㄐㄧ', tone: 1 },
+                { symbol: 'ㄑ', pinyin: 'q', syllable: 'ㄑㄧ', tone: 1 },
+                { symbol: 'ㄒ', pinyin: 'x', syllable: 'ㄒㄧ', tone: 1 },
+                { symbol: 'ㄓ', pinyin: 'zh', syllable: 'ㄓ', tone: 1 },
+                { symbol: 'ㄔ', pinyin: 'ch', syllable: 'ㄔ', tone: 1 },
+                { symbol: 'ㄕ', pinyin: 'sh', syllable: 'ㄕ', tone: 1 },
+                { symbol: 'ㄖ', pinyin: 'r', syllable: 'ㄖ', tone: 4 },
+                { symbol: 'ㄗ', pinyin: 'z', syllable: 'ㄗ', tone: 1 },
+                { symbol: 'ㄘ', pinyin: 'c', syllable: 'ㄘ', tone: 1 },
+                { symbol: 'ㄙ', pinyin: 's', syllable: 'ㄙ', tone: 1 }
+            ],
+            vowels: [
+                { symbol: 'ㄚ', pinyin: 'a', syllable: 'ㄚ', tone: 1 },
+                { symbol: 'ㄛ', pinyin: 'o', syllable: 'ㄛ', tone: 1 },
+                { symbol: 'ㄜ', pinyin: 'e', syllable: 'ㄜ', tone: 4 },
+                { symbol: 'ㄝ', pinyin: 'ê', syllable: 'ㄧㄝ', tone: 1 },
+                { symbol: 'ㄞ', pinyin: 'ai', syllable: 'ㄞ', tone: 1 },
+                { symbol: 'ㄟ', pinyin: 'ei', syllable: 'ㄟ', tone: 1 },
+                { symbol: 'ㄠ', pinyin: 'ao', syllable: 'ㄠ', tone: 1 },
+                { symbol: 'ㄡ', pinyin: 'ou', syllable: 'ㄡ', tone: 1 },
+                { symbol: 'ㄢ', pinyin: 'an', syllable: 'ㄢ', tone: 1 },
+                { symbol: 'ㄣ', pinyin: 'en', syllable: 'ㄣ', tone: 1 },
+                { symbol: 'ㄤ', pinyin: 'ang', syllable: 'ㄤ', tone: 1 },
+                { symbol: 'ㄥ', pinyin: 'eng', syllable: 'ㄥ', tone: 1 },
+                { symbol: 'ㄦ', pinyin: 'er', syllable: 'ㄦ', tone: 2 },
+                { symbol: 'ㄧ', pinyin: 'i', syllable: 'ㄧ', tone: 1 },
+                { symbol: 'ㄨ', pinyin: 'u', syllable: 'ㄨ', tone: 1 },
+                { symbol: 'ㄩ', pinyin: 'ü', syllable: 'ㄩ', tone: 1 }
+            ],
+            tones: [
+                { symbol: 'ˉ', pinyin: '1st (high)', syllable: 'ㄇㄚ', tone: 1 },
+                { symbol: 'ˊ', pinyin: '2nd (rising)', syllable: 'ㄇㄚ', tone: 2 },
+                { symbol: 'ˇ', pinyin: '3rd (dip)', syllable: 'ㄇㄚ', tone: 3 },
+                { symbol: 'ˋ', pinyin: '4th (falling)', syllable: 'ㄇㄚ', tone: 4 },
+                { symbol: '˙', pinyin: 'neutral', syllable: 'ㄇㄚ', tone: 1 }
+            ]
+        };
 
-        let currentCharacter = null;
-        let userInput = [];
-        let correctCount = 0;
-        let totalCount = 0;
-        let showPinyinAlways = false;
-        let audioElement = null;
+        let currentCards = [];
+        let currentIndex = 0;
+        let currentFilter = 'all';
 
-        function init() {
-            const consonantsGrid = document.getElementById('consonants');
-            consonants.forEach(c => consonantsGrid.appendChild(createKey(c)));
+        function buildCardDeck(filter) {
+            currentCards = [];
 
-            const vowelsGrid = document.getElementById('vowels');
-            vowels.forEach(v => vowelsGrid.appendChild(createKey(v)));
-
-            const tonesGrid = document.getElementById('tones');
-            tones.forEach(t => tonesGrid.appendChild(createKey(t, 'tone')));
-
-            nextCharacter();
-        }
-
-        function createKey(char, extraClass = '') {
-            const key = document.createElement('div');
-            key.className = `key ${extraClass}`;
-            key.textContent = char;
-            key.addEventListener('click', () => addToInput(char));
-            return key;
-        }
-
-        function addToInput(char) {
-            userInput.push(char);
-            updateInputDisplay();
-        }
-
-        function updateInputDisplay(highlights = null) {
-            const inputDiv = document.getElementById('userInput');
-            if (userInput.length === 0) {
-                inputDiv.innerHTML = '<span class="input-placeholder">Type using the keyboard on the left</span>';
-            } else {
-                inputDiv.innerHTML = userInput.map((c, i) => {
-                    let className = 'input-char';
-                    if (highlights && i < highlights.length) {
-                        className += highlights[i] ? ' correct' : ' incorrect';
-                    }
-                    return `<span class="${className}">${c}</span>`;
-                }).join('');
-            }
-        }
-
-        function backspace() {
-            if (userInput.length > 0) {
-                userInput.pop();
-                updateInputDisplay();
-                hideFeedback();
-            }
-        }
-
-        function togglePinyin() {
-            showPinyinAlways = !showPinyinAlways;
-            const toggle = document.getElementById('pinyinToggle');
-            const pinyin = document.getElementById('pinyin');
-
-            if (showPinyinAlways) {
-                toggle.classList.add('active');
-                pinyin.classList.add('show');
-            } else {
-                toggle.classList.remove('active');
-                if (!document.getElementById('btnNext').style.display ||
-                    document.getElementById('btnNext').style.display === 'none') {
-                    pinyin.classList.remove('show');
-                }
-            }
-        }
-
-        function clearInput() {
-            userInput = [];
-            updateInputDisplay();
-            hideFeedback();
-        }
-
-        function checkAnswer() {
-            if (!currentCharacter || userInput.length === 0) return;
-
-            const userAnswer = userInput.join('');
-            const correctAnswer = currentCharacter.bopomofo;
-            const correctChars = [...correctAnswer];
-
-            const feedback = document.getElementById('feedback');
-            const btnNext = document.getElementById('btnNext');
-
-            if (userAnswer === correctAnswer) {
-                feedback.className = 'feedback correct';
-                feedback.innerHTML = '✓ Correct! 正確！';
-                correctCount++;
-                totalCount++;
-                updateScore();
-                btnNext.style.display = 'inline-block';
-                document.getElementById('pinyin').classList.add('show');
-                updateInputDisplay(userInput.map(() => true));
-            } else {
-                const highlights = userInput.map((char, index) => {
-                    return index < correctChars.length && char === correctChars[index];
+            if (filter === 'all' || filter === 'consonants') {
+                bopomofoData.consonants.forEach(item => {
+                    currentCards.push({ ...item, type: 'Consonant' });
                 });
-                updateInputDisplay(highlights);
-
-                feedback.className = 'feedback incorrect';
-                feedback.innerHTML = `✗ Try again! (${correctAnswer.length} symbols needed)`;
+            }
+            if (filter === 'all' || filter === 'vowels') {
+                bopomofoData.vowels.forEach(item => {
+                    currentCards.push({ ...item, type: 'Vowel' });
+                });
+            }
+            if (filter === 'all' || filter === 'tones') {
+                bopomofoData.tones.forEach(item => {
+                    currentCards.push({ ...item, type: 'Tone' });
+                });
             }
         }
 
-        function skipCharacter() {
-            const feedback = document.getElementById('feedback');
-            feedback.className = 'feedback incorrect';
-            feedback.innerHTML = `Answer: ${currentCharacter.bopomofo} (${currentCharacter.pinyin})`;
-            document.getElementById('pinyin').classList.add('show');
-            document.getElementById('btnNext').style.display = 'inline-block';
-            totalCount++;
-            updateScore();
-        }
-
-        function nextCharacter() {
-            currentCharacter = characters[Math.floor(Math.random() * characters.length)];
-            document.getElementById('character').textContent = currentCharacter.char;
-            document.getElementById('pinyin').textContent = currentCharacter.pinyin;
-
-            if (showPinyinAlways) {
-                document.getElementById('pinyin').classList.add('show');
-            } else {
-                document.getElementById('pinyin').classList.remove('show');
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
-
-            clearInput();
-            document.getElementById('btnNext').style.display = 'none';
         }
 
-        function hideFeedback() {
-            document.getElementById('feedback').className = 'feedback';
+        function updateCard() {
+            const card = currentCards[currentIndex];
+            document.getElementById('cardSymbol').textContent = card.symbol;
+            document.getElementById('cardAnswer').textContent = card.pinyin;
+            document.getElementById('cardType').textContent = card.type;
+            document.getElementById('cardTypeBack').textContent = card.type;
+
+            // Update progress
+            document.getElementById('progressText').textContent =
+                `Card ${currentIndex + 1} of ${currentCards.length}`;
+            document.getElementById('progressFill').style.width =
+                `${((currentIndex + 1) / currentCards.length) * 100}%`;
+
+            // Reset flip state
+            document.getElementById('flashcard').classList.remove('flipped');
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === currentCards.length - 1;
         }
 
-        function updateScore() {
-            document.getElementById('correct').textContent = correctCount;
-            document.getElementById('total').textContent = totalCount;
+        function playSound() {
+            const card = currentCards[currentIndex];
+            const audioUrl = `${GCIN_BASE}/${encodeURIComponent(card.syllable)}/${card.tone}.mp3`;
+            const audio = new Audio(audioUrl);
+            audio.play().catch(err => console.error('Audio error:', err));
         }
 
-        function playCharacterSound() {
-            if (!currentCharacter) return;
-
-            const btn = document.getElementById('soundBtn');
-            btn.style.opacity = '0.5';
-
-            if (audioElement) {
-                audioElement.pause();
-                audioElement.remove();
+        // Event listeners
+        document.getElementById('flashcard').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('sound-btn')) {
+                document.getElementById('flashcard').classList.toggle('flipped');
             }
-
-            audioElement = document.createElement('audio');
-            audioElement.src = `audio/${currentCharacter.char}.mp3`;
-
-            audioElement.onended = () => btn.style.opacity = '1';
-            audioElement.onerror = () => btn.style.opacity = '1';
-            audioElement.play().catch(() => btn.style.opacity = '1');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            init();
-            document.getElementById('soundBtn').addEventListener('click', playCharacterSound);
         });
+
+        document.getElementById('soundBtnFront').addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSound();
+        });
+
+        document.getElementById('soundBtnBack').addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSound();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentIndex < currentCards.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        });
+
+        document.getElementById('shuffleBtn').addEventListener('click', () => {
+            shuffleArray(currentCards);
+            currentIndex = 0;
+            updateCard();
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.control-btn[data-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.control-btn[data-filter]').forEach(b =>
+                    b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                buildCardDeck(currentFilter);
+                currentIndex = 0;
+                updateCard();
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                document.getElementById('flashcard').classList.toggle('flipped');
+            } else if (e.code === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            } else if (e.code === 'ArrowRight' && currentIndex < currentCards.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        });
+
+        // Initialize
+        buildCardDeck('all');
+        updateCard();
     </script>
 </body>
 </html>
