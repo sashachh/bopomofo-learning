@@ -526,8 +526,8 @@
 
         function playSound() {
             const card = currentCards[currentIndex];
-            // Format: /mp3/{syllable}{tone}/3.mp3 (e.g., /mp3/ㄇㄚ1/3.mp3)
-            const folder = card.tone === 0 ? card.syllable : `${card.syllable}${card.tone}`;
+            // Format: unmarked folder = tone 1, numbered = tones 2-4
+            const folder = (card.tone === 0 || card.tone === 1) ? card.syllable : `${card.syllable}${card.tone}`;
             const audioUrl = `${GCIN_BASE}/${encodeURIComponent(folder)}/3.mp3`;
             const audio = new Audio(audioUrl);
             audio.play().catch(err => console.error('Audio error:', err));

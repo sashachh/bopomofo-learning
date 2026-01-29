@@ -423,8 +423,9 @@
             document.body.appendChild(audioElement);
 
             // Use GCIN voice data CDN (Taiwan MOE standard pronunciation)
-            // Format: /mp3/{syllable}{tone}/3.mp3 (e.g., /mp3/ㄇㄚ1/3.mp3)
-            const folder = tone === 0 ? syllable : `${syllable}${tone}`;
+            // Format: unmarked folder = tone 1, numbered = tones 2-4
+            // e.g., /mp3/ㄇㄚ/3.mp3 (tone 1), /mp3/ㄇㄚ2/3.mp3 (tone 2)
+            const folder = (tone === 0 || tone === 1) ? syllable : `${syllable}${tone}`;
             audioElement.src = `${GCIN_BASE}/${encodeURIComponent(folder)}/3.mp3`;
 
             audioElement.onended = function() {
