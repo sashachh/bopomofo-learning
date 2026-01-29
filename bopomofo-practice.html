@@ -418,7 +418,6 @@
     </div>
 
     <script>
-        // Bopomofo data - audio files use Chinese character mnemonics in audio/ folder
         const bopomofoData = {
             consonants: [
                 { symbol: 'ㄅ', pinyin: 'b', audio: '玻' },
@@ -440,7 +439,7 @@
                 { symbol: 'ㄕ', pinyin: 'sh', audio: '詩' },
                 { symbol: 'ㄖ', pinyin: 'r', audio: '日' },
                 { symbol: 'ㄗ', pinyin: 'z', audio: '資' },
-                { symbol: 'ㄘ', pinyin: 'c', audio: '次' },
+                { symbol: 'ㄘ', pinyin: 'c', audio: '詞' },
                 { symbol: 'ㄙ', pinyin: 's', audio: '絲' }
             ],
             vowels: [
@@ -449,7 +448,7 @@
                 { symbol: 'ㄜ', pinyin: 'e', audio: '餓' },
                 { symbol: 'ㄝ', pinyin: 'ê', audio: '耶' },
                 { symbol: 'ㄞ', pinyin: 'ai', audio: '哀' },
-                { symbol: 'ㄟ', pinyin: 'ei', audio: '美' },
+                { symbol: 'ㄟ', pinyin: 'ei', audio: '誒' },
                 { symbol: 'ㄠ', pinyin: 'ao', audio: '凹' },
                 { symbol: 'ㄡ', pinyin: 'ou', audio: '歐' },
                 { symbol: 'ㄢ', pinyin: 'an', audio: '安' },
@@ -524,10 +523,7 @@
 
         function playSound() {
             const card = currentCards[currentIndex];
-            // Use local audio files - audio is either card.audio (for tones) or card.symbol
-            const audioFile = card.audio || card.symbol;
-            const audioUrl = `audio/${encodeURIComponent(audioFile)}.mp3`;
-            const audio = new Audio(audioUrl);
+            const audio = new Audio(`audio/${card.audio}.mp3`);
             audio.play().catch(err => console.error('Audio error:', err));
         }
 

@@ -345,8 +345,7 @@
     <div class="audio-status" id="audioStatus">🔊 Playing sound...</div>
 
     <script>
-        // Bopomofo data with pinyin equivalents
-        // Audio files use Chinese character mnemonics stored in audio/ folder
+        // Bopomofo data with pinyin equivalents and audio character
         const bopomofoData = {
             consonants: [
                 { zhuyin: 'ㄅ', pinyin: 'b', audio: '玻' },
@@ -368,7 +367,7 @@
                 { zhuyin: 'ㄕ', pinyin: 'sh', audio: '詩' },
                 { zhuyin: 'ㄖ', pinyin: 'r', audio: '日' },
                 { zhuyin: 'ㄗ', pinyin: 'z', audio: '資' },
-                { zhuyin: 'ㄘ', pinyin: 'c', audio: '次' },
+                { zhuyin: 'ㄘ', pinyin: 'c', audio: '詞' },
                 { zhuyin: 'ㄙ', pinyin: 's', audio: '絲' }
             ],
             vowels: [
@@ -377,7 +376,7 @@
                 { zhuyin: 'ㄜ', pinyin: 'e', audio: '餓' },
                 { zhuyin: 'ㄝ', pinyin: 'ê', audio: '耶' },
                 { zhuyin: 'ㄞ', pinyin: 'ai', audio: '哀' },
-                { zhuyin: 'ㄟ', pinyin: 'ei', audio: '美' },
+                { zhuyin: 'ㄟ', pinyin: 'ei', audio: '誒' },
                 { zhuyin: 'ㄠ', pinyin: 'ao', audio: '凹' },
                 { zhuyin: 'ㄡ', pinyin: 'ou', audio: '歐' },
                 { zhuyin: 'ㄢ', pinyin: 'an', audio: '安' },
@@ -403,10 +402,10 @@
         // Hidden audio element for playback
         let audioElement = null;
 
-        function playSound(audioFile, tileElement) {
+        function playSound(zhuyin, audioChar, tileElement) {
             // Show visual feedback
             tileElement.classList.add('playing');
-            showAudioStatus(`🔊 Playing...`);
+            showAudioStatus(`🔊 ${zhuyin} (${audioChar})`);
 
             // Remove existing audio element if any
             if (audioElement) {
@@ -420,7 +419,7 @@
             document.body.appendChild(audioElement);
 
             // Use local audio files
-            audioElement.src = `audio/${encodeURIComponent(audioFile)}.mp3`;
+            audioElement.src = `audio/${audioChar}.mp3`;
 
             audioElement.onended = function() {
                 tileElement.classList.remove('playing');
@@ -428,7 +427,7 @@
             };
 
             audioElement.onerror = function() {
-                console.error('Audio failed to load:', audioFile);
+                console.error('Audio failed to load:', audioChar);
                 tileElement.classList.remove('playing');
                 hideAudioStatus();
             };
@@ -454,8 +453,7 @@
             tile.className = 'tile';
             tile.dataset.zhuyin = item.zhuyin;
             tile.dataset.pinyin = item.pinyin;
-            // Audio file is either item.audio (for tones) or item.zhuyin (for consonants/vowels)
-            tile.dataset.audio = item.audio || item.zhuyin;
+            tile.dataset.audio = item.audio;
 
             const front = document.createElement('div');
             front.className = 'tile-face tile-front';
@@ -479,8 +477,7 @@
                     tile.classList.remove('flipped');
                 } else {
                     // If not flipped, single click plays sound
-                    const audioFile = item.audio || item.zhuyin;
-                    playSound(audioFile, tile);
+                    playSound(item.zhuyin, item.audio, tile);
                 }
             });
 
