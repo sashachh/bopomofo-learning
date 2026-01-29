@@ -345,55 +345,55 @@
     <div class="audio-status" id="audioStatus">🔊 Playing sound...</div>
 
     <script>
-        // Bopomofo data with pinyin equivalents and audio character
+        // Bopomofo data with pinyin equivalents - using official Taiwan MOE audio
         const bopomofoData = {
             consonants: [
-                { zhuyin: 'ㄅ', pinyin: 'b', audio: '玻' },
-                { zhuyin: 'ㄆ', pinyin: 'p', audio: '坡' },
-                { zhuyin: 'ㄇ', pinyin: 'm', audio: '摸' },
-                { zhuyin: 'ㄈ', pinyin: 'f', audio: '佛' },
-                { zhuyin: 'ㄉ', pinyin: 'd', audio: '得' },
-                { zhuyin: 'ㄊ', pinyin: 't', audio: '特' },
-                { zhuyin: 'ㄋ', pinyin: 'n', audio: '訥' },
-                { zhuyin: 'ㄌ', pinyin: 'l', audio: '勒' },
-                { zhuyin: 'ㄍ', pinyin: 'g', audio: '哥' },
-                { zhuyin: 'ㄎ', pinyin: 'k', audio: '科' },
-                { zhuyin: 'ㄏ', pinyin: 'h', audio: '喝' },
-                { zhuyin: 'ㄐ', pinyin: 'j', audio: '機' },
-                { zhuyin: 'ㄑ', pinyin: 'q', audio: '七' },
-                { zhuyin: 'ㄒ', pinyin: 'x', audio: '西' },
-                { zhuyin: 'ㄓ', pinyin: 'zh', audio: '知' },
-                { zhuyin: 'ㄔ', pinyin: 'ch', audio: '吃' },
-                { zhuyin: 'ㄕ', pinyin: 'sh', audio: '詩' },
-                { zhuyin: 'ㄖ', pinyin: 'r', audio: '日' },
-                { zhuyin: 'ㄗ', pinyin: 'z', audio: '資' },
-                { zhuyin: 'ㄘ', pinyin: 'c', audio: '詞' },
-                { zhuyin: 'ㄙ', pinyin: 's', audio: '絲' }
+                { zhuyin: 'ㄅ', pinyin: 'b', audio: 'ㄅ' },
+                { zhuyin: 'ㄆ', pinyin: 'p', audio: 'ㄆ' },
+                { zhuyin: 'ㄇ', pinyin: 'm', audio: 'ㄇ' },
+                { zhuyin: 'ㄈ', pinyin: 'f', audio: 'ㄈ' },
+                { zhuyin: 'ㄉ', pinyin: 'd', audio: 'ㄉ' },
+                { zhuyin: 'ㄊ', pinyin: 't', audio: 'ㄊ' },
+                { zhuyin: 'ㄋ', pinyin: 'n', audio: 'ㄋ' },
+                { zhuyin: 'ㄌ', pinyin: 'l', audio: 'ㄌ' },
+                { zhuyin: 'ㄍ', pinyin: 'g', audio: 'ㄍ' },
+                { zhuyin: 'ㄎ', pinyin: 'k', audio: 'ㄎ' },
+                { zhuyin: 'ㄏ', pinyin: 'h', audio: 'ㄏ' },
+                { zhuyin: 'ㄐ', pinyin: 'j', audio: 'ㄐ' },
+                { zhuyin: 'ㄑ', pinyin: 'q', audio: 'ㄑ' },
+                { zhuyin: 'ㄒ', pinyin: 'x', audio: 'ㄒ' },
+                { zhuyin: 'ㄓ', pinyin: 'zh', audio: 'ㄓ' },
+                { zhuyin: 'ㄔ', pinyin: 'ch', audio: 'ㄔ' },
+                { zhuyin: 'ㄕ', pinyin: 'sh', audio: 'ㄕ' },
+                { zhuyin: 'ㄖ', pinyin: 'r', audio: 'ㄖ' },
+                { zhuyin: 'ㄗ', pinyin: 'z', audio: 'ㄗ' },
+                { zhuyin: 'ㄘ', pinyin: 'c', audio: 'ㄘ' },
+                { zhuyin: 'ㄙ', pinyin: 's', audio: 'ㄙ' }
             ],
             vowels: [
-                { zhuyin: 'ㄚ', pinyin: 'a', audio: '啊' },
-                { zhuyin: 'ㄛ', pinyin: 'o', audio: '喔' },
-                { zhuyin: 'ㄜ', pinyin: 'e', audio: '餓' },
-                { zhuyin: 'ㄝ', pinyin: 'ê', audio: '耶' },
-                { zhuyin: 'ㄞ', pinyin: 'ai', audio: '哀' },
-                { zhuyin: 'ㄟ', pinyin: 'ei', audio: '誒' },
-                { zhuyin: 'ㄠ', pinyin: 'ao', audio: '凹' },
-                { zhuyin: 'ㄡ', pinyin: 'ou', audio: '歐' },
-                { zhuyin: 'ㄢ', pinyin: 'an', audio: '安' },
-                { zhuyin: 'ㄣ', pinyin: 'en', audio: '恩' },
-                { zhuyin: 'ㄤ', pinyin: 'ang', audio: '骯' },
-                { zhuyin: 'ㄥ', pinyin: 'eng', audio: '鞥' },
-                { zhuyin: 'ㄦ', pinyin: 'er', audio: '兒' },
-                { zhuyin: 'ㄧ', pinyin: 'i', audio: '衣' },
-                { zhuyin: 'ㄨ', pinyin: 'u', audio: '屋' },
-                { zhuyin: 'ㄩ', pinyin: 'ü', audio: '迂' }
+                { zhuyin: 'ㄚ', pinyin: 'a', audio: 'ㄚ' },
+                { zhuyin: 'ㄛ', pinyin: 'o', audio: 'ㄛ' },
+                { zhuyin: 'ㄜ', pinyin: 'e', audio: 'ㄜ' },
+                { zhuyin: 'ㄝ', pinyin: 'ê', audio: 'ㄝ' },
+                { zhuyin: 'ㄞ', pinyin: 'ai', audio: 'ㄞ' },
+                { zhuyin: 'ㄟ', pinyin: 'ei', audio: 'ㄟ' },
+                { zhuyin: 'ㄠ', pinyin: 'ao', audio: 'ㄠ' },
+                { zhuyin: 'ㄡ', pinyin: 'ou', audio: 'ㄡ' },
+                { zhuyin: 'ㄢ', pinyin: 'an', audio: 'ㄢ' },
+                { zhuyin: 'ㄣ', pinyin: 'en', audio: 'ㄣ' },
+                { zhuyin: 'ㄤ', pinyin: 'ang', audio: 'ㄤ' },
+                { zhuyin: 'ㄥ', pinyin: 'eng', audio: 'ㄥ' },
+                { zhuyin: 'ㄦ', pinyin: 'er', audio: 'ㄦ' },
+                { zhuyin: 'ㄧ', pinyin: 'i', audio: 'ㄧ' },
+                { zhuyin: 'ㄨ', pinyin: 'u', audio: 'ㄨ' },
+                { zhuyin: 'ㄩ', pinyin: 'ü', audio: 'ㄩ' }
             ],
             tones: [
-                { zhuyin: 'ˉ', pinyin: 'mā (1st)', audio: '媽' },
-                { zhuyin: 'ˊ', pinyin: 'má (2nd)', audio: '麻' },
-                { zhuyin: 'ˇ', pinyin: 'mǎ (3rd)', audio: '馬' },
-                { zhuyin: 'ˋ', pinyin: 'mà (4th)', audio: '罵' },
-                { zhuyin: '˙', pinyin: 'ma (neutral)', audio: '嗎' }
+                { zhuyin: 'ˉ', pinyin: 'mā (1st)', audio: 'tone1' },
+                { zhuyin: 'ˊ', pinyin: 'má (2nd)', audio: 'tone2' },
+                { zhuyin: 'ˇ', pinyin: 'mǎ (3rd)', audio: 'tone3' },
+                { zhuyin: 'ˋ', pinyin: 'mà (4th)', audio: 'tone4' },
+                { zhuyin: '˙', pinyin: 'ma (neutral)', audio: 'tone1' }
             ]
         };
 
