@@ -27,10 +27,20 @@
             padding: 20px;
         }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         header {
             text-align: center;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         .main-container {
@@ -446,20 +456,22 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
-            <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
-        </div>
-        <nav class="nav-links">
-            <a href="index.html" class="nav-link">Learn</a>
-            <a href="bopomofo-practice.html" class="nav-link">Practice</a>
-            <a href="bopomofo-quiz.html" class="nav-link active">Quiz</a>
-            <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
-        </nav>
-    </header>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
+                <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
+            </div>
+            <p>Interactive Bopomofo Learning</p>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Learn</a>
+                <a href="bopomofo-practice.html" class="nav-link">Practice</a>
+                <a href="bopomofo-quiz.html" class="nav-link active">Quiz</a>
+                <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
+            </nav>
+        </header>
 
-    <div class="main-container">
+        <div class="main-container">
         <!-- Left: Keyboard -->
         <div class="keyboard-panel">
             <div class="keyboard-section">
@@ -790,5 +802,6 @@
             document.getElementById('soundBtn').addEventListener('click', playCharacterSound);
         });
     </script>
+    </div>
 </body>
 </html>
