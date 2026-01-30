@@ -23,14 +23,19 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
         }
 
         .main-container {
             display: flex;
-            height: 100vh;
-            padding: 10px;
+            height: calc(100vh - 140px);
             gap: 12px;
         }
 
@@ -109,28 +114,22 @@
             min-width: 0;
         }
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 50px;
+            height: 50px;
         }
 
         .logo-text {
-            font-size: 1.5rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             font-weight: bold;
             letter-spacing: -1px;
         }
@@ -153,16 +152,18 @@
 
         .nav-links {
             display: flex;
-            gap: 8px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .nav-link {
             color: white;
             text-decoration: none;
             background: rgba(255,255,255,0.2);
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 25px;
             transition: background 0.3s;
         }
 
@@ -409,9 +410,14 @@
 
         /* Responsive */
         @media (max-width: 900px) {
+            body {
+                padding: 15px;
+            }
+
             .main-container {
                 flex-direction: column-reverse;
                 overflow-y: auto;
+                height: auto;
             }
 
             .keyboard-panel {
@@ -427,10 +433,32 @@
                 height: 60px;
                 font-size: 2rem;
             }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
+            <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html" class="nav-link">Learn</a>
+            <a href="bopomofo-practice.html" class="nav-link">Practice</a>
+            <a href="bopomofo-quiz.html" class="nav-link active">Quiz</a>
+            <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
+        </nav>
+    </header>
+
     <div class="main-container">
         <!-- Left: Keyboard -->
         <div class="keyboard-panel">
@@ -450,18 +478,6 @@
 
         <!-- Right: Practice area -->
         <div class="practice-panel">
-            <div class="header">
-                <div class="logo">
-                    <img src="logo.svg" alt="bopomo.fo" class="logo-icon">
-                    <div class="logo-text"><span class="bopo">bopo</span><span class="mo">mo</span><span class="dot">.</span><span class="fo">fo</span></div>
-                </div>
-                <nav class="nav-links">
-                    <a href="index.html" class="nav-link">Learn</a>
-                    <a href="bopomofo-practice.html" class="nav-link">Practice</a>
-                    <a href="bopomofo-quiz.html" class="nav-link active">Quiz</a>
-                    <a href="bopomofo-faq.html" class="nav-link">FAQ</a>
-                </nav>
-            </div>
 
             <div class="score-toggle">
                 <div class="score">Score: <span id="correct">0</span> / <span id="total">0</span></div>
