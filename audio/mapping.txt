@@ -1,0 +1,44 @@
+# Bopomofo (注音符號) Audio File Mapping
+# Source: https://stroke-order.learningweb.moe.edu.tw/phonetic.jsp
+# Male voice: male/M*.WAV | Female voice: female/F*.WAV
+
+# Consonants (聲母) - 21 characters
+1	ㄅ	b	M1.WAV	F1.WAV
+2	ㄆ	p	M2.WAV	F2.WAV
+3	ㄇ	m	M3.WAV	F3.WAV
+4	ㄈ	f	M4.WAV	F4.WAV
+5	ㄉ	d	M5.WAV	F5.WAV
+6	ㄊ	t	M6.WAV	F6.WAV
+7	ㄋ	n	M7.WAV	F7.WAV
+8	ㄌ	l	M8.WAV	F8.WAV
+9	ㄍ	g	M9.WAV	F9.WAV
+10	ㄎ	k	M10.WAV	F10.WAV
+11	ㄏ	h	M11.WAV	F11.WAV
+12	ㄐ	j	M12.WAV	F12.WAV
+13	ㄑ	q	M13.WAV	F13.WAV
+14	ㄒ	x	M14.WAV	F14.WAV
+15	ㄓ	zh	M15.WAV	F15.WAV
+16	ㄔ	ch	M16.WAV	F16.WAV
+17	ㄕ	sh	M17.WAV	F17.WAV
+18	ㄖ	r	M18.WAV	F18.WAV
+19	ㄗ	z	M19.WAV	F19.WAV
+20	ㄘ	c	M20.WAV	F20.WAV
+21	ㄙ	s	M21.WAV	F21.WAV
+
+# Vowels/Finals (韻母) - 16 characters
+22	ㄚ	a	M22.WAV	F22.WAV
+23	ㄛ	o	M23.WAV	F23.WAV
+24	ㄜ	e	M24.WAV	F24.WAV
+25	ㄝ	ê	M25.WAV	F25.WAV
+26	ㄞ	ai	M26.WAV	F26.WAV
+27	ㄟ	ei	M27.WAV	F27.WAV
+28	ㄠ	ao	M28.WAV	F28.WAV
+29	ㄡ	ou	M29.WAV	F29.WAV
+30	ㄢ	an	M30.WAV	F30.WAV
+31	ㄣ	en	M31.WAV	F31.WAV
+32	ㄤ	ang	M32.WAV	F32.WAV
+33	ㄥ	eng	M33.WAV	F33.WAV
+34	ㄦ	er	M34.WAV	F34.WAV
+35	ㄧ	i	M35.WAV	F35.WAV
+36	ㄨ	u	M36.WAV	F36.WAV
+37	ㄩ	ü	M37.WAV	F37.WAV
