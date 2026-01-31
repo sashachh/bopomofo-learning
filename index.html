@@ -418,8 +418,9 @@
             audioElement.style.display = 'none';
             document.body.appendChild(audioElement);
 
-            // Use local audio files
-            audioElement.src = `audio/${audioChar}.mp3`;
+            // Use local audio files (ㄟ uses .wav for better quality)
+            const ext = audioChar === 'ㄟ' ? 'wav' : 'mp3';
+            audioElement.src = `audio/${audioChar}.${ext}`;
 
             audioElement.onended = function() {
                 tileElement.classList.remove('playing');
