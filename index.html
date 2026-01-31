@@ -402,10 +402,40 @@
         // Hidden audio element for playback
         let audioElement = null;
 
+        // Mapping from bopomofo character to MOE file number
+        const audioFileMap = {
+            'ㄅ': 1, 'ㄆ': 2, 'ㄇ': 3, 'ㄈ': 4,
+            'ㄉ': 5, 'ㄊ': 6, 'ㄋ': 7, 'ㄌ': 8,
+            'ㄍ': 9, 'ㄎ': 10, 'ㄏ': 11,
+            'ㄐ': 12, 'ㄑ': 13, 'ㄒ': 14,
+            'ㄓ': 15, 'ㄔ': 16, 'ㄕ': 17, 'ㄖ': 18,
+            'ㄗ': 19, 'ㄘ': 20, 'ㄙ': 21,
+            'ㄚ': 22, 'ㄛ': 23, 'ㄜ': 24, 'ㄝ': 25,
+            'ㄞ': 26, 'ㄟ': 27, 'ㄠ': 28, 'ㄡ': 29,
+            'ㄢ': 30, 'ㄣ': 31, 'ㄤ': 32, 'ㄥ': 33,
+            'ㄦ': 34, 'ㄧ': 35, 'ㄨ': 36, 'ㄩ': 37
+        };
+
+        // Track click count per character for alternating voices
+        const clickCount = {};
+
         function playSound(zhuyin, audioChar, tileElement) {
             // Show visual feedback
             tileElement.classList.add('playing');
-            showAudioStatus(`🔊 ${zhuyin} (${audioChar})`);
+
+            // Initialize click count for this character
+            if (!clickCount[audioChar]) {
+                clickCount[audioChar] = 0;
+            }
+            clickCount[audioChar]++;
+
+            // Alternate between female (odd clicks) and male (even clicks)
+            const isFemale = clickCount[audioChar] % 2 === 1;
+            const voiceLabel = isFemale ? 'female' : 'male';
+            const prefix = isFemale ? 'F' : 'M';
+            const fileNum = audioFileMap[audioChar];
+
+            showAudioStatus(`🔊 ${zhuyin} (${voiceLabel})`);
 
             // Remove existing audio element if any
             if (audioElement) {
@@ -418,9 +448,13 @@
             audioElement.style.display = 'none';
             document.body.appendChild(audioElement);
 
-            // Use local audio files (ㄟ uses .wav for better quality)
-            const ext = audioChar === 'ㄟ' ? 'wav' : 'mp3';
-            audioElement.src = `audio/${audioChar}.${ext}`;
+            // Use MOE audio files (female_mp3/F*.mp3 or male_mp3/M*.mp3)
+            if (fileNum) {
+                audioElement.src = `audio/${voiceLabel}_mp3/${prefix}${fileNum}.mp3`;
+            } else {
+                // Fallback for tones (not in MOE files)
+                audioElement.src = `audio/${audioChar}.mp3`;
+            }
 
             audioElement.onended = function() {
                 tileElement.classList.remove('playing');
