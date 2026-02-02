@@ -1,0 +1,17 @@
+{
+  "name": "bopomo.fo - Learn Bopomofo",
+  "short_name": "bopomo.fo",
+  "description": "Interactive Bopomofo (Zhuyin) learning for Mandarin Chinese pronunciation",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
