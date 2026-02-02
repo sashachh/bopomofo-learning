@@ -215,6 +215,7 @@
             margin-top: 8px;
             opacity: 0;
             transition: opacity 0.3s;
+            text-transform: lowercase;
         }
 
         .character-pinyin.show {
@@ -222,18 +223,23 @@
         }
 
         .btn-sound {
-            width: 65px;
-            height: 65px;
+            width: 80px;
+            height: 80px;
             border: none;
             border-radius: 50%;
-            background: transparent;
+            background: none;
+            background-color: transparent;
             color: #667eea;
-            font-size: 2.5rem;
+            font-size: 3rem;
             cursor: pointer;
             transition: transform 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 0;
+            outline: none;
         }
 
         .btn-sound:hover {
@@ -524,6 +530,10 @@
             </div>
         </div>
     </div>
+
+    <footer style="text-align: center; color: rgba(255,255,255,0.7); margin-top: 20px; padding: 20px; font-size: 0.8rem;">
+        <p>© 2026 Sasha B. Chhabra 陳博樂 • Audio from Taiwan Ministry of Education</p>
+    </footer>
 
     <script>
         const consonants = ['ㄅ','ㄆ','ㄇ','ㄈ','ㄉ','ㄊ','ㄋ','ㄌ','ㄍ','ㄎ','ㄏ','ㄐ','ㄑ','ㄒ','ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'];
