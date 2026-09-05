@@ -13,8 +13,8 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="theme-color" content="#0d4e48">
-<title>Taipei 101 Boba Climb</title>
-<meta name="description" content="A light, 2048-style snake game — grow Taipei 101 by eating boba pearls.">
+<title>Taipei Snake</title>
+<meta name="description" content="A light snake game — grow Taipei 101 by eating boba pearls.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
@@ -42,7 +42,7 @@
   }
   .wrap{width:100%;max-width:500px;display:flex;flex-direction:column;gap:16px}
 
-  /* header: title + score pills, 2048-style */
+  /* header: title + score pills */
   header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
   .title{display:flex;flex-direction:column;line-height:1;gap:5px}
   .title .cjk{font-weight:900;font-size:38px;letter-spacing:-.5px;color:var(--ink)}
@@ -103,7 +103,7 @@
 <div class="wrap">
   <header>
     <div class="title">
-      <span class="cjk">Taipei 101</span>
+      <span class="cjk">Taipei Snake</span>
       <span class="sub">BOBA CLIMB</span>
     </div>
     <div class="scores">
@@ -123,8 +123,8 @@
     <canvas id="game"></canvas>
 
     <div class="overlay" id="startScreen">
-      <span class="mark">Taipei 101</span>
-      <p>Steer the pinnacle, swallow the boba pearls, and stack the tower to 508&nbsp;m.</p>
+      <span class="mark">Taipei Snake</span>
+      <p>Climb the tower.</p>
       <button class="btn" id="startBtn">Play</button>
     </div>
 
@@ -134,7 +134,7 @@
     </div>
 
     <div class="overlay hidden" id="overScreen">
-      <span class="mark" id="overMark">Taipei 101</span>
+      <span class="mark" id="overMark">Taipei Snake</span>
       <div class="big"><span id="finalHeight">0</span><small>m reached</small></div>
       <p id="overNote"></p>
       <button class="btn" id="againBtn">Try again</button>
@@ -230,7 +230,7 @@
     if(height>best){ best=height; localStorage.setItem('t101_best',best);
       document.getElementById('best').textContent=best; }
     const reached=height>=GOAL;
-    document.getElementById('overMark').textContent=reached?'508 m reached':'Taipei 101';
+    document.getElementById('overMark').textContent=reached?'508 m reached':'Taipei Snake';
     document.getElementById('finalHeight').textContent=height;
     let note;
     if(reached) note='You matched Taipei 101 — well built!';
@@ -247,7 +247,7 @@
     const px=COLS*cell;
     ctx.save();
     if(shake>0){ const m=shake/300*3.5; ctx.translate((Math.random()-.5)*m,(Math.random()-.5)*m); }
-    // board + soft tile slots (2048-style)
+    // board + soft tile slots
     ctx.fillStyle='#e3d7bf'; ctx.fillRect(-4,-4,px+8,px+8);
     ctx.fillStyle='rgba(255,255,255,.30)';
     const g=cell*0.09, r=cell*0.16;
